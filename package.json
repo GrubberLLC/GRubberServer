@@ -1,0 +1,24 @@
+{
+  "name": "seekifyserver",
+  "version": "1.0.0",
+  "description": "Seekify App Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./bin/index.js"
+  },
+  "author": "Omar Jandali",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1540.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.2",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "install": "^0.13.0",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^3.0.3",
+    "npm": "^10.3.0"
+  }
+}
