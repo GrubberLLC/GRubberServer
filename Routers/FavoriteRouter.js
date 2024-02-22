@@ -10,4 +10,7 @@ FavoriteRouter.route('/:id')
   .put(FavoriteController.updateFavoriteById)
   .delete(FavoriteController.deleteFavoriteById)
 
+FavoriteRouter.route('/user/:id')
+  .get(FavoriteController.getFavoriteByUserId)
+
 module.exports = FavoriteRouter;

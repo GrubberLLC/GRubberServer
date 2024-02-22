@@ -15,9 +15,10 @@ const PlaceController = {
       address_state, address_zipcode, address_formatted, rating,
       review_count, picture, price, categories, yelp_id, yelp_url], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Place created with ID: ${results.insertId}`)
+        console.log(JSON.stringify(results))
+        return res.status(201).send({id: results.insertId})
     });
   },
   getPlaceById: (req, res) => {
@@ -27,9 +28,22 @@ const PlaceController = {
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(results)
+        return res.status(201).send(results)
+    });
+  },
+  getPlaceByYelpId: (req, res) => {
+    const {id} = req.params; 
+    const query = `
+      SELECT * FROM Places WHERE yelp_id = ?
+    `
+    connection.query(query, [id], (err, results) => {
+        if(err){
+          console.log(err)
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(results)
     });
   },
   updatePlaceById: (req, res) => {
@@ -48,9 +62,9 @@ const PlaceController = {
       address_formatted, rating, review_count, picture, price, categories, 
       yelp_id, yelp_url, id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Profile successfully updated - ID: ${id}`)
+        return res.status(201).send(`Profile successfully updated - ID: ${id}`)
     });
   },
   deletePlaceById: (req, res) => {
@@ -60,9 +74,9 @@ const PlaceController = {
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Profile successfully delete`)
+        return res.status(201).send(`Profile successfully delete`)
     });
   },
 }

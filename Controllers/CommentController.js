@@ -9,9 +9,10 @@ const CommentController = {
       VALUES (?, ?, ?, ?, ?, ?, NOW())`
     connection.query(query, [user_id, image, comment, rating, place_favorite_id, place_list_id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
-        } 
-        res.status(201).send(`Comment created with ID: ${results.insertId}`)
+          return res.status(500).send(err.message);
+        }
+        console.log(results) 
+        return res.status(201).send({id: results.insertId, message: `Comment created with ID: ${results.insertId}`})
     });
   },
   getCommentById: (req, res) => {
@@ -21,9 +22,25 @@ const CommentController = {
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(results)
+        return res.status(201).send(results)
+    });
+  },
+  getCommentByPlId: (req, res) => {
+    const {id} = req.params; 
+    const query = `
+      SELECT c.*, p.* 
+      FROM Comments c
+      JOIN Profiles p
+      ON c.user_id = p.user_id
+      WHERE place_list_id = ?
+    `
+    connection.query(query, [id], (err, results) => {
+        if(err){
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(results)
     });
   },
   updateCommentById: (req, res) => {
@@ -36,9 +53,10 @@ const CommentController = {
     `
     connection.query(query, [user_id, image, comment, rating, place_favorite_id, place_list_id, id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          console.log(JSON.stringify(err))
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Comment successfully updated - ID: ${id}`)
+        return res.status(201).send(`Comment successfully updated - ID: ${id}`)
     });
   },
   deleteProfileById: (req, res) => {
@@ -48,9 +66,9 @@ const CommentController = {
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Comment successfully delete`)
+        return res.status(201).send(`Comment successfully delete`)
     });
   },
 }

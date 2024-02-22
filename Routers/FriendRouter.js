@@ -10,4 +10,22 @@ FriendRouter.route('/:id')
   .put(FriendController.updateFriendById)
   .delete(FriendController.deleteFriendById)
 
+FriendRouter.route('/follower/:id')
+  .get(FriendController.getFollowersByUserIs)
+
+FriendRouter.route('/following/:id')
+  .get(FriendController.getFolloweringByUserIs)
+
+FriendRouter.route('/accept/:id')
+  .put(FriendController.acceptFriendRequest)
+
+FriendRouter.route('/following-count/:id')
+  .get(FriendController.getAllFollowingByUserIs)
+
+FriendRouter.route('/follower-count/:id')
+  .get(FriendController.getAllFollowersByUserIs)
+
+FriendRouter.route('/relation/:userId/:friendId')
+  .get(FriendController.getFriendByIds)
+
 module.exports = FriendRouter;

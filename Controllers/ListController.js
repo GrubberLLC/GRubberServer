@@ -10,9 +10,9 @@ const ListController = {
     connection.query(query, [name, description, picture, last_activity, public, created_by], (err, results) => {
         if(err){
           console.error('Error creating list: ' + err.message);
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`List created with ID: ${results.insertId}`);
+        return res.status(201).send(results);
     });
   },
   getListById: (req, res) => {
@@ -22,9 +22,9 @@ const ListController = {
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(results)
+        return res.status(201).send(results)
     });
   },
   updateListById: (req, res) => {
@@ -37,9 +37,9 @@ const ListController = {
     `
     connection.query(query, [name, description, picture, last_activity, public, id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`List successfully updated - ID: ${name} / ${id}`)
+        return res.status(201).send(`List successfully updated - ID: ${name} / ${id}`)
     });
   },
   deleteListById: (req, res) => {
@@ -49,21 +49,26 @@ const ListController = {
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`List successfully delete`)
+        return res.status(201).send(`List successfully delete`)
     });
   },
   getListByUserId: (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT * FROM Lists WHERE created_by = ?
+      SELECT m.*, l.*
+      FROM Lists l
+      JOIN Members m
+      ON m.list_id = l.list_id
+      WHERE m.user_id = ?
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          console.log(err)
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(results)
+        return res.status(201).send(results)
     });
   },
   updateListPublic: (req, res) => {
@@ -76,9 +81,9 @@ const ListController = {
     `
     connection.query(query, [public, id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`List Visibilty was successfully updated - ID: ${id}`)
+        return res.status(201).send(`List Visibilty was successfully updated - ID: ${id}`)
     });
   },
 }

@@ -10,4 +10,7 @@ CommentRouter.route('/:id')
   .put(CommentController.updateCommentById)
   .delete(CommentController.deleteProfileById)
 
+CommentRouter.route('/pl/:id')
+  .get(CommentController.getCommentByPlId)
+
 module.exports = CommentRouter;

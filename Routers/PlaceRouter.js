@@ -10,5 +10,7 @@ PlaceRouter.route('/:id')
   .put(PlaceController.updatePlaceById)
   .delete(PlaceController.deletePlaceById)
 
+PlaceRouter.route('/check/:id')
+  .get(PlaceController.getPlaceByYelpId)
 
 module.exports = PlaceRouter;

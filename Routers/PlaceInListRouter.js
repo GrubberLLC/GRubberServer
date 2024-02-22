@@ -10,4 +10,7 @@ PlaceInListRouter.route('/:id')
   .put(PlaceInListController.updatePlaceInListById)
   .delete(PlaceInListController.deletePlaceInListById)
 
+PlaceInListRouter.route('/list/:id')
+  .get(PlaceInListController.getPlaceInListByListId)
+
 module.exports = PlaceInListRouter;

@@ -10,5 +10,13 @@ ProfileRouter.route('/:id')
   .put(ProfileController.updateProfileById)
   .delete(ProfileController.deleteProfileById)
 
+ProfileRouter.route('/user/:username')
+  .get(ProfileController.getProfileByUsername)
+
+ProfileRouter.route('/search/:search')
+  .get(ProfileController.searchProfilesByUsername)
+
+ProfileRouter.route('/email/:email')
+  .get(ProfileController.getProfileByEmail)
 
 module.exports = ProfileRouter;

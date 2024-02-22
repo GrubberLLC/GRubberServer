@@ -2,43 +2,83 @@ const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as n
 
 const MemberController = {
   createMember: (req, res) => {
-    const {user_id, list_id, status} = req.body; 
+    const {user_id, list_id, status, type} = req.body; 
     const query = `
       INSERT INTO Members 
-        (user_id, list_id, status, created_at)
-      VALUES (?, ?, ?, NOW())`
-    connection.query(query, [user_id, list_id, status], (err, results) => {
+        (user_id, list_id, status, type, created_at)
+      VALUES (?, ?, ?, ?, NOW())`
+    connection.query(query, [user_id, list_id, status, type], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          console.log(JSON.stringify(err))
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Member created with ID: ${results.insertId}`)
+        return res.status(201).send(`Member created`)
     });
   },
   getMemberById: (req, res) => {
     const {id} = req.params; 
+    console.log(id)
     const query = `
-      SELECT * FROM Members WHERE member_id = ?
+      SELECT l.*, m.* 
+      FROM Members m
+      JOIN Lists l
+      ON m.list_id = l.list_id
+      WHERE m.user_id = ?
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          console.log(JSON.stringify(err))
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(results)
+        console.log(results)
+        return res.status(201).send(results)
+    });
+  },
+  getMemberByListId: (req, res) => {
+    const {id} = req.params; 
+    const query = `
+      SELECT p.*, m.* 
+      FROM Members m
+      JOIN Profiles p 
+      ON m.user_id = p.user_id
+      WHERE list_id = ?
+    `
+    connection.query(query, [id], (err, results) => {
+        if(err){
+          console.log(err)
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(results)
+    });
+  },
+  acceptMemberRequestById: (req, res) => {
+    const {id} = req.params; 
+    const query = `
+    UPDATE Members
+    SET type = 'active'
+    WHERE member_id = ?
+    `
+    connection.query(query, [id], (err, results) => {
+        if(err){
+          console.log(err)
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(`Member successfully updated - ID: ${id}`)
     });
   },
   updateMemberById: (req, res) => {
     const {id} = req.params; 
-    const {user_id, list_id, status} = req.body
+    const {user_id, list_id, status, type} = req.body
     const query = `
     UPDATE Members
-    SET user_id = ?, list_id = ?, status = ?
+    SET user_id = ?, list_id = ?, status = ?, type = ?
     WHERE member_id = ?
     `
-    connection.query(query, [user_id, list_id, status, id], (err, results) => {
+    connection.query(query, [user_id, list_id, status, type, id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Member successfully updated - ID: ${id}`)
+        return res.status(201).send(`Member successfully updated - ID: ${id}`)
     });
   },
   deleteMemberById: (req, res) => {
@@ -48,9 +88,9 @@ const MemberController = {
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Member successfully delete`)
+        return res.status(201).send(`Member successfully delete`)
     });
   },
 }

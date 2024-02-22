@@ -10,4 +10,7 @@ ActivityRouter.route('/:id')
   .put(ActivityController.updateAcivityById)
   .delete(ActivityController.deleteActivityById)
 
+ActivityRouter.route('/user/:id')
+  .get(ActivityController.getActivityByUserId)
+
 module.exports = ActivityRouter;

@@ -9,9 +9,9 @@ const FavoriteController = {
       VALUES (?, ?, ?, NOW())`
     connection.query(query, [user_id, place_id, list_id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Favorites created with ID: ${results.insertId}`)
+        return res.status(201).send({id: results.insertId})
     });
   },
   getFavoriteById: (req, res) => {
@@ -21,9 +21,26 @@ const FavoriteController = {
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(results)
+        return res.status(201).send(results)
+    });
+  },
+  getFavoriteByUserId: (req, res) => {
+    const {id} = req.params; 
+    const query = `
+      SELECT f.*, p.*
+      FROM Favorites f
+      JOIN Places p
+      ON f.place_id = p.place_id
+      WHERE f.user_id = ?
+    `
+    connection.query(query, [id], (err, results) => {
+        if(err){
+          console.log(JSON.stringify(err))
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(results)
     });
   },
   updateFavoriteById: (req, res) => {
@@ -36,9 +53,9 @@ const FavoriteController = {
     `
     connection.query(query, [user_id, place_id, list_id, id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Favorites successfully updated - ID: ${id}`)
+        return res.status(201).send(`Favorites successfully updated - ID: ${id}`)
     });
   },
   deleteFavoriteById: (req, res) => {
@@ -48,9 +65,9 @@ const FavoriteController = {
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Favorite successfully delete`)
+        return res.status(201).send(`Favorite successfully delete`)
     });
   },
 }

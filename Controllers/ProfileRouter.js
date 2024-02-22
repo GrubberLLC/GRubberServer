@@ -15,21 +15,62 @@ const ProfileController = {
     connection.query(query, [user_id, username, email, phone, location, first_name, 
       last_name, full_name, profile_picture], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          console.log(err)
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Profile created with ID: ${results.insertId}`)
+        return res.status(201).send(`Profile created!`)
     });
   },
   getProfileById: (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT * FROM Profiles WHERE profile_id = ?
+      SELECT * FROM Profiles WHERE user_id = ? LIMIT 1
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(results)
+        return res.status(201).send(results)
+    });
+  },
+  getProfileByUsername: (req, res) => {
+    const {username} = req.params; 
+    const query = `
+      SELECT * FROM Profiles WHERE username = ? LIMIT 1
+    `
+    connection.query(query, [username], (err, results) => {
+        if(err){
+          console.log(err)
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(results)
+    });
+  },
+  getProfileByEmail: (req, res) => {
+    const {email} = req.params; 
+    const query = `
+      SELECT * FROM Profiles WHERE email = ? LIMIT 1
+    `
+    connection.query(query, [email], (err, results) => {
+        if(err){
+          console.log(err)
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(results)
+    });
+  },
+  searchProfilesByUsername: (req, res) => {
+    const { search } = req.params; // Assuming the search term is passed as a query parameter
+    const query = `
+      SELECT * FROM Profiles WHERE username LIKE ?
+    `;
+    connection.query(query, [`%${search}%`], (err, results) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err.message);
+      }
+      console.log('results: ', results)
+      return res.status(200).send(results);
     });
   },
   updateProfileById: (req, res) => {
@@ -50,9 +91,10 @@ const ProfileController = {
       profile_picture, public, notification, following, 
       followers, id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          console.log(JSON.stringify(err))
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Profile successfully updated - ID: ${username} / ${id}`)
+        return res.status(201).send(`Profile successfully updated - ID: ${username} / ${id}`)
     });
   },
   deleteProfileById: (req, res) => {
@@ -62,9 +104,9 @@ const ProfileController = {
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`Profile successfully delete`)
+        return res.status(201).send(`Profile successfully delete`)
     });
   },
 }

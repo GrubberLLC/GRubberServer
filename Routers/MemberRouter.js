@@ -10,4 +10,10 @@ MemberRouter.route('/:id')
   .put(MemberController.updateMemberById)
   .delete(MemberController.deleteMemberById)
 
+MemberRouter.route('/list/:id')
+  .get(MemberController.getMemberByListId)
+
+MemberRouter.route('/request/:id')
+  .put(MemberController.acceptMemberRequestById)
+
 module.exports = MemberRouter;

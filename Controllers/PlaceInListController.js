@@ -9,9 +9,9 @@ const PlaceInListController = {
       VALUES (?, ?, NOW())`
     connection.query(query, [place_id, list_id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`PlaceInList created with ID: ${results.insertId}`)
+        return res.status(201).send(`PlaceInList created with ID: ${results.insertId}`)
     });
   },
   getPlaceInListById: (req, res) => {
@@ -21,9 +21,27 @@ const PlaceInListController = {
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(results)
+        return res.status(201).send(results)
+    });
+  },
+  getPlaceInListByListId: (req, res) => {
+    const {id} = req.params; 
+    console.log(id)
+    const query = `
+      SELECT pl.*, p.*
+      FROM PlaceInList pl
+      JOIN Places p
+      ON pl.place_id = p.place_id
+      WHERE list_id = ?
+    `
+    connection.query(query, [id], (err, results) => {
+        if(err){
+          console.log(JSON.stringify(err))
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(results)
     });
   },
   updatePlaceInListById: (req, res) => {
@@ -36,9 +54,9 @@ const PlaceInListController = {
     `
     connection.query(query, [place_id, list_id, id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`PlaceInList successfully updated - ID: ${id}`)
+        return res.status(201).send(`PlaceInList successfully updated - ID: ${id}`)
     });
   },
   deletePlaceInListById: (req, res) => {
@@ -48,9 +66,9 @@ const PlaceInListController = {
     `
     connection.query(query, [id], (err, results) => {
         if(err){
-          res.status(500).send(err.message);
+          return res.status(500).send(err.message);
         } 
-        res.status(201).send(`PlaceInList successfully delete`)
+        return res.status(201).send(`PlaceInList successfully delete`)
     });
   },
 }
