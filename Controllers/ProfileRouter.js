@@ -97,6 +97,22 @@ const ProfileController = {
         return res.status(201).send(`Profile successfully updated - ID: ${username} / ${id}`)
     });
   },
+  updateLoginStatusById: (req, res) => {
+    const {id} = req.params; 
+    const {status} = req.body; 
+    const query = `
+    UPDATE Profiles
+    SET logged_in = ?
+    WHERE user_id = ?
+    `
+    connection.query(query, [status, id], (err, results) => {
+        if(err){
+          console.log(JSON.stringify(err))
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(`Profile successfully updated - ID: ${username} / ${id}`)
+    });
+  },
   deleteProfileById: (req, res) => {
     const {id} = req.params; 
     const query = `
