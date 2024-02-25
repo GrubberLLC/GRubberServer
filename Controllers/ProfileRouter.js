@@ -100,6 +100,7 @@ const ProfileController = {
   updateLoginStatusById: (req, res) => {
     const {id} = req.params; 
     const {status} = req.body; 
+    console.log(status)
     const query = `
     UPDATE Profiles
     SET logged_in = ?
@@ -110,7 +111,7 @@ const ProfileController = {
           console.log(JSON.stringify(err))
           return res.status(500).send(err.message);
         } 
-        return res.status(201).send(`Profile successfully updated - ID: ${username} / ${id}`)
+        return res.status(201).send(`Updated LoggedIn status to ${status === 1 ? 'logged in' : 'logged out'}`)
     });
   },
   deleteProfileById: (req, res) => {

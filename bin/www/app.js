@@ -32,5 +32,6 @@ app.use('/api/v1/members/', MemberRouter)
 app.use('/api/v1/friends/', FriendRouter)
 app.use('/api/v1/placeinlist/', PlaceInListRouter)
 app.use('/api/v1/favorites/', FavoriteRouter)
+app.use('/api/v1/notifications/', FavoriteRouter)
 
 module.exports = app;

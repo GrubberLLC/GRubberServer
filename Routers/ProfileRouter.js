@@ -20,6 +20,6 @@ ProfileRouter.route('/email/:email')
   .get(ProfileController.getProfileByEmail)
 
 ProfileRouter.route('/loggedIn/:id')
-  .get(ProfileController.updateLoginStatusById)
+  .put(ProfileController.updateLoginStatusById)
 
 module.exports = ProfileRouter;
