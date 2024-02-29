@@ -51,6 +51,24 @@ const MemberController = {
         return res.status(201).send(results)
     });
   },
+  getPendingMemberByListId: (req, res) => {
+    const {id} = req.params; 
+    const query = `
+      SELECT p.*, m.* 
+      FROM Members m
+      JOIN Profiles p 
+      ON m.user_id = p.user_id
+      WHERE m.list_id = ? 
+      AND m.status = 'pending'
+    `
+    connection.query(query, [id], (err, results) => {
+        if(err){
+          console.log(err)
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(results)
+    });
+  },
   acceptMemberRequestById: (req, res) => {
     const {id} = req.params; 
     const query = `
