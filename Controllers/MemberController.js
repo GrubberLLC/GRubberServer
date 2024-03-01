@@ -51,14 +51,14 @@ const MemberController = {
         return res.status(201).send(results)
     });
   },
-  getPendingMemberByListId: (req, res) => {
+  getPendingMemberByMemberId: (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT p.*, m.* 
+      SELECT l.*, m.* 
       FROM Members m
-      JOIN Profiles p 
-      ON m.user_id = p.user_id
-      WHERE m.list_id = ? 
+      JOIN Lists l
+      ON m.list_id = l.list_id
+      WHERE m.user_id = ? 
       AND m.type = 'pending'
     `
     connection.query(query, [id], (err, results) => {

@@ -14,7 +14,7 @@ MemberRouter.route('/list/:id')
   .get(MemberController.getMemberByListId)
 
 MemberRouter.route('/list/pending/:id')
-  .get(MemberController.getPendingMemberByListId)
+  .get(MemberController.getPendingMemberByMemberId)
 
 MemberRouter.route('/request/:id')
   .put(MemberController.acceptMemberRequestById)
