@@ -38,7 +38,25 @@ const ActivityController = {
         }
         return res.status(201).send(typeResults)
     });
-},
+  },
+  getActivityByFollowingId: (req, res) => {
+    const activities = []
+    const { id } = req.params;
+    const typeQuery = `
+      SELECT f.*, a.*
+      FROM Activity a
+      JOIN Friends f
+      ON f.following_id = a.user_id
+      WHERE a.follower_id = ?
+      AND a.status = 'active'
+    `;
+    connection.query(typeQuery, [id], (typeErr, typeResults) => {
+        if (typeErr) {
+            return res.status(500).send(typeErr.message);
+        }
+        return res.status(201).send(typeResults)
+    });
+  },
   updateAcivityById: (req, res) => {
     const {id} = req.params; 
     const {user_id, activity, type, favorites_id, list_id, following_id, comment_id} = req.body;

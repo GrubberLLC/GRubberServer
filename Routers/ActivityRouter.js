@@ -13,4 +13,7 @@ ActivityRouter.route('/:id')
 ActivityRouter.route('/user/:id')
   .get(ActivityController.getActivityByUserId)
 
+ActivityRouter.route('/following/:id')
+  .get(ActivityController.getActivityByFollowingId)
+
 module.exports = ActivityRouter;
