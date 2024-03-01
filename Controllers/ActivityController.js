@@ -47,8 +47,8 @@ const ActivityController = {
       FROM Activity a
       JOIN Friends f
       ON f.following_id = a.user_id
-      WHERE a.follower_id = ?
-      AND a.status = 'active'
+      WHERE f.follower_id = ?
+      AND f.status = 'active'
     `;
     connection.query(typeQuery, [id], (typeErr, typeResults) => {
         if (typeErr) {
