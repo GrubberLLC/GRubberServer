@@ -59,7 +59,7 @@ const MemberController = {
       JOIN Profiles p 
       ON m.user_id = p.user_id
       WHERE m.list_id = ? 
-      AND m.status = 'pending'
+      AND m.type = 'pending'
     `
     connection.query(query, [id], (err, results) => {
         if(err){
