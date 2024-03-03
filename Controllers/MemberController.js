@@ -2,12 +2,12 @@ const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as n
 
 const MemberController = {
   createMember: (req, res) => {
-    const {user_id, list_id, status, sent_request, type} = req.body; 
+    const {user_id, list_id, status, type, sent_request} = req.body; 
     const query = `
       INSERT INTO Members 
         (user_id, list_id, status, type, sent_request, created_at)
       VALUES (?, ?, ?, ?, ?, NOW())`
-    connection.query(query, [user_id, list_id, status, sent_request, type], (err, results) => {
+    connection.query(query, [user_id, list_id, status, type, sent_request], (err, results) => {
         if(err){
           console.log(JSON.stringify(err))
           return res.status(500).send(err.message);
