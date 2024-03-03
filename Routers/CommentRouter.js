@@ -13,4 +13,7 @@ CommentRouter.route('/:id')
 CommentRouter.route('/pl/:id')
   .get(CommentController.getCommentByPlId)
 
+CommentRouter.route('/place/:id')
+  .get(CommentController.getCommentByPlaceId)
+
 module.exports = CommentRouter;

@@ -43,6 +43,22 @@ const CommentController = {
         return res.status(201).send(results)
     });
   },
+  getCommentByPlaceId: (req, res) => {
+    const {id} = req.params; 
+    const query = `
+      SELECT c.*, p.* 
+      FROM Comments c
+      JOIN Profiles p
+      ON c.user_id = p.user_id
+      WHERE c.place_id = ?
+    `
+    connection.query(query, [id], (err, results) => {
+        if(err){
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(results)
+    });
+  },
   updateCommentById: (req, res) => {
     const {id} = req.params; 
     const {user_id, image, comment, rating, place_favorite_id, place_list_id} = req.body
