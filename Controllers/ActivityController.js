@@ -49,6 +49,7 @@ const ActivityController = {
       ON f.following_id = a.user_id
       WHERE f.follower_id = ?
       AND f.status = 'active'
+      ORDER BY a.created_at DESC
     `;
     connection.query(typeQuery, [id], (typeErr, typeResults) => {
         if (typeErr) {
