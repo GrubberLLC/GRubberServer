@@ -9,6 +9,7 @@ const CommentController = {
       VALUES (?, ?, ?, ?, ?, ?, NOW())`
     connection.query(query, [user_id, image, comment, rating, place_id, place_list_id], (err, results) => {
         if(err){
+          console.log(err)
           return res.status(500).send(err.message);
         }
         console.log(results) 
