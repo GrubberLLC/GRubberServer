@@ -5,7 +5,7 @@ const CommentController = {
     const {user_id, image, comment, rating, place_id, place_list_id} = req.body; 
     const query = `
       INSERT INTO Comments 
-        (user_id, image, comment, rating, place_favorites_id, place_list_id, created_at)
+        (user_id, image, comment, rating, place_id, place_list_id, created_at)
       VALUES (?, ?, ?, ?, ?, ?, NOW())`
     connection.query(query, [user_id, image, comment, rating, place_id, place_list_id], (err, results) => {
         if(err){
