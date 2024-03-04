@@ -2,12 +2,12 @@ const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as n
 
 const CommentController = {
   createComment: (req, res) => {
-    const {user_id, image, comment, rating, place_favorite_id, place_list_id, created_at} = req.body; 
+    const {user_id, image, comment, rating, place_id, place_list_id} = req.body; 
     const query = `
       INSERT INTO Comments 
         (user_id, image, comment, rating, place_favorites_id, place_list_id, created_at)
       VALUES (?, ?, ?, ?, ?, ?, NOW())`
-    connection.query(query, [user_id, image, comment, rating, place_favorite_id, place_list_id], (err, results) => {
+    connection.query(query, [user_id, image, comment, rating, place_id, place_list_id], (err, results) => {
         if(err){
           return res.status(500).send(err.message);
         }
