@@ -16,8 +16,8 @@ const ActivityController = {
   },
   getActivityById: (req, res) => {
     const {id} = req.params; 
-    const query = `
-      SELECT * FROM Activity WHERE activity_id = ?
+    const query = ` 
+      SELECT * FROM Activity WHERE activity_id = ? ORDER BY created_at DESC
     `
     connection.query(query, [id], (err, results) => {
         if(err){
@@ -30,7 +30,7 @@ const ActivityController = {
     const activities = []
     const { id } = req.params;
     const typeQuery = `
-      SELECT * FROM Activity WHERE user_id = ?
+      SELECT * FROM Activity WHERE user_id = ? ORDER BY created_at DESC
     `;
     connection.query(typeQuery, [id], (typeErr, typeResults) => {
         if (typeErr) {
