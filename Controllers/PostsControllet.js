@@ -35,7 +35,7 @@ const PostsControllet = {
     const query = `
       SELECT * FROM Posts WHERE user_id = ? 
     `
-    connection.query(query, [username], (err, results) => {
+    connection.query(query, [id], (err, results) => {
         if(err){
           console.log(err)
           return res.status(500).send(err.message);
