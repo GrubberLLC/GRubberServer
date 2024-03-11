@@ -8,7 +8,7 @@ const PostsControllet = {
       INSERT INTO Posts 
         (user_id, content_url, place_id, caption, likes, 
          location, visible, boosted, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())`
     connection.query(query, [user_id, content_url, place_id, caption, likes, 
       location, visible, boosted], (err, results) => {
         if(err){
