@@ -10,9 +10,9 @@ const PostsControllet = {
          location, visible, boosted, created_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`
     connection.query(query, [user_id, content_url, place_id, caption, likes, 
-      location, visible, boosted ], (err, results) => {
+      location, visible, boosted], (err, results) => {
         if(err){
-          console.log(err)
+          console.log(JSON.stringify(err))
           return res.status(500).send(err.message);
         } 
         return res.status(201).send(`Post created!`)
