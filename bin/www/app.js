@@ -15,6 +15,7 @@ const ActivityRouter = require('../../Routers/ActivityRouter');
 const FriendRouter = require('../../Routers/FriendRouter');
 const PlaceInListRouter = require('../../Routers/PlaceInListRouter');
 const FavoriteRouter = require('../../Routers/FavoriteRouter');
+const PostRouter = require('../../Routers/PostRouter');
 
 const app = express();
 
@@ -33,5 +34,6 @@ app.use('/api/v1/friends/', FriendRouter)
 app.use('/api/v1/placeinlist/', PlaceInListRouter)
 app.use('/api/v1/favorites/', FavoriteRouter)
 app.use('/api/v1/notifications/', FavoriteRouter)
+app.use('/api/v1/posts/', PostRouter)
 
 module.exports = app;
