@@ -4,7 +4,7 @@ const PostCommentController = {
   createPost: (req, res) => {
     const { post_id, comment, user_id } = req.body; 
     const query = `
-      INSERT INTO Posts 
+      INSERT INTO PostComments 
         (post_id, comment, user_id, created_at)
       VALUES (?, ?, ?, NOW())`
     connection.query(query, [post_id, comment, user_id], (err, results) => {
