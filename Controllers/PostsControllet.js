@@ -50,7 +50,13 @@ const PostsControllet = {
   getPostByPlaceId: (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT * FROM Profiles WHERE place_id = ? 
+      SELECT p.*, pr.*, u.* 
+      FROM Posts p
+      JOIN Places pr
+      JOIN Profile u
+      ON p.place_id = pr.place_id
+      ON p.user_id = u.user_id
+      WHERE p.place_id = ? 
     `
     connection.query(query, [id], (err, results) => {
         if(err){

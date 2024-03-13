@@ -31,7 +31,6 @@ const PostCommentController = {
         return res.status(201).send(results)
     });
   },
-  
   deletePostById: (req, res) => {
     const {id} = req.params; 
     const query = `
