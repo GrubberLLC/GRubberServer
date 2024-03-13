@@ -53,8 +53,8 @@ const PostsControllet = {
       SELECT p.*, pr.*, u.* 
       FROM Posts p
       JOIN Places pr
-      JOIN Profiles u
       ON p.place_id = pr.place_id
+      JOIN Profiles u
       ON p.user_id = u.user_id
       WHERE p.place_id = ? 
     `
