@@ -77,19 +77,19 @@ const ProfileController = {
     const {id} = req.params; 
     const {user_id, username, email, phone, 
       location, first_name, last_name, 
-      full_name, profile_picture, public, 
+      full_name, profile_picture, public, bio,
       notification, following, followers} = req.body
     const query = `
     UPDATE Profiles
     SET user_id = ?, username = ?, email = ?, phone = ?, location = ?,
       first_name = ?, last_name = ?, full_name = ?, profile_picture = ?, 
-      public = ?, notifications = ?, following = ?, followers = ?
+      public = ?, notifications = ?, following = ?, followers = ?, bio = ?
     WHERE profile_id = ?
     `
     connection.query(query, [user_id, username, email, 
       phone, location, first_name, last_name, full_name, 
       profile_picture, public, notification, following, 
-      followers, id], (err, results) => {
+      followers, bio, id], (err, results) => {
         if(err){
           console.log(JSON.stringify(err))
           return res.status(500).send(err.message);
