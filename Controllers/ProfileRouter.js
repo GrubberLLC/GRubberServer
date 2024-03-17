@@ -4,16 +4,16 @@ const ProfileController = {
   createProfile: (req, res) => {
     const { user_id, username, email, phone, 
       location, first_name, last_name, 
-      full_name, profile_picture } = req.body; 
+      full_name, bio,  profile_picture } = req.body; 
     const query = `
       INSERT INTO Profiles 
         (user_id, username, email, phone, location, 
          first_name, last_name, full_name,
-         profile_picture, following, followers, 
+         profile_picture, bio, following, followers, 
          created_at, last_login)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, NOW(), NOW())`
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, NOW(), NOW())`
     connection.query(query, [user_id, username, email, phone, location, first_name, 
-      last_name, full_name, profile_picture], (err, results) => {
+      last_name, full_name, profile_picture, bio], (err, results) => {
         if(err){
           console.log(err)
           return res.status(500).send(err.message);
