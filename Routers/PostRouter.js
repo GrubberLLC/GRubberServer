@@ -13,6 +13,9 @@ PostRouter.route('/:id')
 PostRouter.route('/user/:id')
   .get(PostsControllet.getPostByUserId)
 
+PostRouter.route('/friend/:id')
+  .get(PostsControllet.getPostByUserId)
+
 PostRouter.route('/place/:id')
   .get(PostsControllet.getPostByPlaceId)
 
