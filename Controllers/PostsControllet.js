@@ -88,7 +88,7 @@ const PostsControllet = {
     //     Friends.follower_id = ?
     // `
     const query = `
-    SELECT p.*. f*. 
+    SELECT p.*, f*. 
     FROM Posts p
     JOIN Friends f
     ON p.user_id = f.following_id
