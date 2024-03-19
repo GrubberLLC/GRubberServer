@@ -70,22 +70,29 @@ const PostsControllet = {
     // grab all of the friends that user follows and for each friend, grab all of the posts that have the same user_id as the friend user_id
     // for each post, grab the place with the same place_id. For each post
     const {id} = req.params; 
+    // const query = `
+    // SELECT
+    // Posts.*,
+    // Friends.follower_id AS user_id,
+    // Profiles.*,
+    // Places.*
+    // FROM
+    //     Friends
+    // INNER JOIN
+    //     Posts ON Friends.following_id = Posts.user_id
+    // INNER JOIN
+    //     Places ON Posts.place_id = Places.place_id
+    // INNER JOIN
+    //     Profiles ON Posts.user_id = Profiles.profile_id
+    // WHERE
+    //     Friends.follower_id = ?
+    // `
     const query = `
-    SELECT
-    Posts.*,
-    Friends.follower_id AS user_id,
-    Profiles.*,
-    Places.*
-    FROM
-        Friends
-    INNER JOIN
-        Posts ON Friends.following_id = Posts.user_id
-    INNER JOIN
-        Places ON Posts.place_id = Places.place_id
-    INNER JOIN
-        Profiles ON Posts.user_id = Profiles.profile_id
-    WHERE
-        Friends.follower_id = ?
+    SELECT p.*. f*. 
+    FROM Posts p
+    JOIN Friends f
+    ON p.user_id = f.following_id
+    WHERE f.follower_id = ?
     `
     connection.query(query, [id], (err, results) => {
         if(err){
