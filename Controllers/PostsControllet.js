@@ -69,12 +69,14 @@ const PostsControllet = {
   getPostByFriendId: (req, res) => {
     const { id } = req.params; 
     const query = `
-      SELECT p.*, f.*, pl.*
+      SELECT p.*, f.*, pl.*, pr.*
       FROM Posts p
       JOIN Friends f
       ON p.user_id = f.following_id
       JOIN Places pl
       ON p.place_id = pl.place_id
+      JOIN Profiles pr
+      ON p.user_id = pr.user_id
       WHERE f.follower_id = ? 
     `;
     connection.query(query, [id], (err, results) => {
