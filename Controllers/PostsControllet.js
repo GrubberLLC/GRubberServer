@@ -78,6 +78,16 @@ const PostsControllet = {
       JOIN Profiles pr
       ON p.user_id = pr.user_id
       WHERE f.follower_id = ? 
+
+      UNION
+      
+      SELECT p.*, NULL AS follower_id, pl.*, pr.*
+      FROM Posts p
+      JOIN Places pl
+      ON p.place_id = pl.place_id
+      JOIN Profiles pr
+      ON p.user_id = pr.user_id
+      WHERE p.user_id = ?
     `;
     connection.query(query, [id], (err, results) => {
         if (err) {
