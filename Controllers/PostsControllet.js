@@ -81,7 +81,7 @@ const PostsControllet = {
 
       UNION
       
-      SELECT p.*, NULL AS follower_id, pl.*, pr.*
+      SELECT p.*, pl.*, pr.*
       FROM Posts p
       JOIN Places pl
       ON p.place_id = pl.place_id
