@@ -89,7 +89,7 @@ const PostsControllet = {
       ON p.user_id = pr.user_id
       WHERE p.user_id = ?
     `;
-    connection.query(query, [id], (err, results) => {
+    connection.query(query, [id, id], (err, results) => {
         if (err) {
             console.log(err)
             return res.status(500).send(err.message);
