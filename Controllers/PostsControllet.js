@@ -81,13 +81,22 @@ const PostsControllet = {
 
       UNION
       
-      SELECT p.*, pl.*, pr.*
-      FROM Posts p
-      JOIN Places pl
+      SELECT 
+        p.*, 
+        NULL as friend_id, 
+        NULL as follower_id, 
+        NULL as following_id, 
+        NULL as status,
+        pl.*, 
+        pr.*
+      FROM 
+        Posts p
+      JOIN Places pl 
       ON p.place_id = pl.place_id
-      JOIN Profiles pr
+      JOIN Profiles pr 
       ON p.user_id = pr.user_id
-      WHERE p.user_id = ? 
+      WHERE 
+        p.user_id = ?;
     `;
     connection.query(query, [id, id], (err, results) => {
         if (err) {
