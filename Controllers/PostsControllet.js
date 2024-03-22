@@ -81,8 +81,10 @@ const PostsControllet = {
 
       UNION
       
-      SELECT p.*, pl.*, pr.*
+      SELECT p.*, f.*, pl.*, pr.*
       FROM Posts p
+      JOIN Friends f
+      ON p.user_id = f.friend_id
       JOIN Places pl
       ON p.place_id = pl.place_id
       JOIN Profiles pr
