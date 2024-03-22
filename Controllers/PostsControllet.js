@@ -87,6 +87,7 @@ const PostsControllet = {
         NULL as follower_id, 
         NULL as following_id, 
         NULL as status,
+        NULL as created_at,
         pl.*, 
         pr.*
       FROM 
