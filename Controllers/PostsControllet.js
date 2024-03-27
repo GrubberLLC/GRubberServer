@@ -26,7 +26,15 @@ const PostsControllet = {
     const offset = (batch - 1) * 100;
     // const batch = parseInt(req.query.batch, 10);
     const query = `
-      SELECT * FROM Posts ORDER BY created_at DESC LIMIT 100 OFFSET ?
+      SELECT p.*, f.*, pl.*, pr.*
+      FROM Posts p
+      JOIN Friends f
+      ON p.user_id = f.following_id
+      JOIN Places pl
+      ON p.place_id = pl.place_id
+      JOIN Profiles pr
+      ON p.user_id = pr.user_id
+      ORDER BY created_at DESC LIMIT 100 OFFSET ?
     `;
     connection.query(query, [offset], (err, results) => {
       if (err) {
