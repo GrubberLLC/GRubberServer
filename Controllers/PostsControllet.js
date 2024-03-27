@@ -18,6 +18,23 @@ const PostsControllet = {
         return res.status(201).send(`Post created!`)
     });
   },
+  getAllPostsInBatch: (req, res) => {
+    const {batch} = req.params; 
+    if (!batch || batch < 1) {
+      return res.status(400).send('Invalid batch number');
+    }
+    const offset = (batch - 1) * 100;
+    // const batch = parseInt(req.query.batch, 10);
+    const query = `
+      SELECT * FROM Posts ORDER BY created_at DESC LIMIT 100 OFFSET ?
+    `;
+    connection.query(query, [offset], (err, results) => {
+      if (err) {
+        return res.status(500).send(err.message);
+      }
+      return res.status(200).send(results);
+    });
+  },
   getPostById: (req, res) => {
     const {id} = req.params; 
     const query = `

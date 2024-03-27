@@ -10,6 +10,9 @@ PostRouter.route('/:id')
   .put(PostsControllet.updatePostById)
   .delete(PostsControllet.deletePostById)
 
+PostRouter.route('/feed/:batch')
+  .get(PostsControllet.getAllPostsInBatch)
+
 PostRouter.route('/user/:id')
   .get(PostsControllet.getPostByUserId)
 
