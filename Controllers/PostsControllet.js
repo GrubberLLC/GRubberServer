@@ -38,6 +38,7 @@ const PostsControllet = {
     `;
     connection.query(query, [offset], (err, results) => {
       if (err) {
+        console.log(JSON.stringify(err))
         return res.status(500).send(err.message);
       }
       return res.status(200).send(results);
