@@ -28,8 +28,6 @@ const PostsControllet = {
     const query = `
       SELECT p.*, f.*, pl.*, pr.*
       FROM Posts p
-      JOIN Friends f
-      ON p.user_id = f.following_id
       JOIN Places pl
       ON p.place_id = pl.place_id
       JOIN Profiles pr
