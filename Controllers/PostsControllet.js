@@ -26,7 +26,7 @@ const PostsControllet = {
     const offset = (batch - 1) * 100;
     // const batch = parseInt(req.query.batch, 10);
     const query = `
-      SELECT p.*, f.*, pl.*, pr.*
+      SELECT p.*, pl.*, pr.*
       FROM Posts p
       JOIN Places pl
       ON p.place_id = pl.place_id
