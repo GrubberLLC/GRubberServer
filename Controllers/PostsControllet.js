@@ -34,7 +34,7 @@ const PostsControllet = {
       ON p.place_id = pl.place_id
       JOIN Profiles pr
       ON p.user_id = pr.user_id
-      ORDER BY created_at DESC LIMIT 100 OFFSET ?
+      ORDER BY p.created_at DESC LIMIT 100 OFFSET ?
     `;
     connection.query(query, [offset], (err, results) => {
       if (err) {
