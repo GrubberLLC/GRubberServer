@@ -2,14 +2,14 @@ const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as n
 
 const PostsControllet = {
   createPost: (req, res) => {
-    const { user_id, media_url, place_id, list_id, caption, likes, 
+    const { user_id, media_url, media_type, place_id, list_id, caption, likes, 
       location, boosted, visible } = req.body; 
     const query = `
       INSERT INTO Posts 
-        (user_id, media_url, place_id, list_id, caption, likes, 
+        (user_id, media_url, media_type, place_id, list_id, caption, likes, 
          location, visible, boosted, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`
-    connection.query(query, [user_id, media_url, place_id, list_id, caption, likes, 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`
+    connection.query(query, [user_id, media_url,media_type, place_id, list_id, caption, likes, 
       location, visible, boosted], (err, results) => {
         if(err){
           console.log(JSON.stringify(err))
