@@ -11,4 +11,4 @@ const dbConfig = {
 
 const connection = postgres(dbConfig)
 
-module.exports = connection;
+module.exports = connection
