@@ -1,14 +1,15 @@
-const postgres = require('postgres');
+const { Pool } = require('pg');
 
 // Database configuration
-const dbConfig = {
+const pool = new Pool({
   host: process.env.RDS_HOSTNAME,
   user: process.env.RDS_USERNAME,
   password: process.env.RDS_PASSWORD,
   database: process.env.RDS_DB_NAME,
-  port: process.env.RDS_PORT
-};
+  port: process.env.RDS_PORT,
+  ssl: {
+    rejectUnauthorized: false // Only if your RDS requires SSL
+  }
+});
 
-const connection = postgres(dbConfig)
-
-module.exports = connection
+module.exports = pool;
