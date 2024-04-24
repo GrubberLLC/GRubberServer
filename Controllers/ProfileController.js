@@ -12,7 +12,7 @@ const ProfileController = {
       location, 
       first_name,
       last_name,
-      full_name,
+      name,
       bio,
       profile_picture
     }
