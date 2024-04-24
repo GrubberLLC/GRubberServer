@@ -16,7 +16,7 @@ const ProfileController = {
       bio,
       profile_picture
     }
-    console.log(full_name)
+    console.log(data)
     const query = `
       INSERT INTO Profiles
       (userId, username, email, phone, location, first_name, last_name, 
