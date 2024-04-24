@@ -3,7 +3,7 @@ const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessa
 const ProfileController = {
   createProfile: async (req, res) => {
     const { userId, username, email, phone, location, first_name, 
-      last_name, name, bio, profile_picture } = req.body;
+      last_name, name, bio, nickname, profile_picture, public, notifications } = req.body;
     const data = {
       userId,
       username, 
@@ -14,19 +14,20 @@ const ProfileController = {
       last_name,
       name,
       bio,
-      profile_picture
+      profile_picture,
+      notifications
     }
     console.log(data)
     const query = `
       INSERT INTO Profiles
       (userId, username, email, phone, location, first_name, last_name, 
-        full_name, profile_picture, bio, following, followers)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 0, 0)
+        full_name, profile_picture, bio, public, nickname, notifications, following, followers)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13 0, 0)
       RETURNING *;`;
 
     try {
       const result = await pool.query(query, [userId, username, email, phone, location, 
-        first_name, last_name, name, profile_picture, bio]);
+        first_name, last_name, name, profile_picture, bio, public, nickname, notifications]);
       res.status(201).json(result.rows[0]);
     } catch (err) {
       console.error(err);
