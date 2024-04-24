@@ -4,20 +4,6 @@ const ProfileController = {
   createProfile: async (req, res) => {
     const { userId, username, email, phone, location, first_name, 
       last_name, name, bio, nickname, profile_picture, public, notifications } = req.body;
-    const data = {
-      userId,
-      username, 
-      email,
-      phone, 
-      location, 
-      first_name,
-      last_name,
-      name,
-      bio,
-      profile_picture,
-      notifications
-    }
-    console.log(data)
     const query = `
       INSERT INTO Profiles
       (userId, username, email, phone, location, first_name, last_name, 
