@@ -18,6 +18,20 @@ const ProfileController = {
       console.error(err);
       res.status(500).send(err.message);
     }
+  },
+  grabProfile: async (req, res) => {
+    const { user_id } = req.params
+    const query = `
+      SELECT * FROM Profiles
+      WHERE user_id = $1
+      LIMIT 1`;
+    try {
+      const result = await pool.query(query, [user_id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   }
 };
 
