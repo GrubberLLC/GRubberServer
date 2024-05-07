@@ -24,7 +24,7 @@ const PlaceController = {
   getPlaceById: async (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT * FROM Places WHERE place_id = $1 RETURNING *;
+      SELECT * FROM Places WHERE place_id = $1;
     `
     try {
       const result = await pool.query(query, [id]);
