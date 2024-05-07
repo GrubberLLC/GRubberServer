@@ -41,7 +41,7 @@ const PlaceController = {
     `
     try {
       const result = await pool.query(query, [id]);
-      res.status(201).json(result);
+      res.status(201).json(result.rows);
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
