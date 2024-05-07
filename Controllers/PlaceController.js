@@ -34,18 +34,18 @@ const PlaceController = {
       res.status(500).send(err.message);
     }
   },
-  getPlaceByYelpId: (req, res) => {
+  getPlaceByYelpId: async (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT * FROM Places WHERE yelp_id = ?
+      SELECT * FROM Places WHERE yelp_id = $1
     `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          console.log(err)
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results)
-    });
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows[0]);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   updatePlaceById: (req, res) => {
     const {id} = req.params; 
