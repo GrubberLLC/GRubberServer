@@ -6,7 +6,7 @@ const PlaceController = {
       address_state, address_zip_code, address_formatted, yelp_url, yelp_id, 
       image, longitude, latitude } = req.body; 
     const query = `
-      INSERT INTO Profiles
+      INSERT INTO Places
       (name, phone, price, rating, review_count, closed, address_street, address_city, address_state, 
         address_zip_code, address_formatted, yelp_url, yelp_id, image, longitude, latitude, created_at)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, NOW())
