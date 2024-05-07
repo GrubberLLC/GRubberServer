@@ -1,22 +1,23 @@
 const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
 
 const PostsControllet = {
-  createPost: (req, res) => {
-    const { user_id, media_url, media_type, place_id, list_id, caption, likes, 
-      location, boosted, visible } = req.body; 
-    const query = `
-      INSERT INTO Posts 
-        (user_id, media_url, media_type, place_id, list_id, caption, likes, 
-         location, visible, boosted, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`
-    connection.query(query, [user_id, media_url,media_type, place_id, list_id, caption, likes, 
-      location, visible, boosted], (err, results) => {
-        if(err){
-          console.log(JSON.stringify(err))
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(`Post created!`)
-    });
+  createPost: async (req, res) => {
+    const { user_id, name, phone, price, rating, review_count, closed, address_street, address_city,
+      address_state, address_zip_code, address_formatted, media, media_type } = req.body; 
+      const query = `
+      INSERT INTO Profiles
+      (user_id, name, phone, price, rating, review_count, closed, address_street,
+        address_city, address_state, address_zip_code, address_formatted, media, media_type, created_at)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, NOW())
+      RETURNING *;`;
+    try {
+      const result = await pool.query(query, [user_id, name, phone, price, rating, review_count, closed, address_street, address_city,
+        address_state, address_zip_code, address_formatted, media, media_type]);
+      res.status(201).json(result.rows[0]);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   getAllPostsInBatch: (req, res) => {
     const {batch} = req.params; 
