@@ -1,4 +1,4 @@
-const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
+const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
 
 const PlaceController = {
   createPlace: async (req, res) => {
