@@ -2,17 +2,14 @@ const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as n
 
 const PostsControllet = {
   createPost: async (req, res) => {
-    const { user_id, name, phone, price, rating, review_count, closed, address_street, address_city,
-      address_state, address_zip_code, address_formatted, media, media_type } = req.body; 
-      const query = `
+    const { media, media_type, user_id, caption, place_id } = req.body; 
+    const query = `
       INSERT INTO Profiles
-      (user_id, name, phone, price, rating, review_count, closed, address_street,
-        address_city, address_state, address_zip_code, address_formatted, media, media_type, created_at)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, NOW())
+      (media, media_type, user_id, caption, place_id, created_at)
+      VALUES ($1, $2, $3, $4, $5, NOW())
       RETURNING *;`;
     try {
-      const result = await pool.query(query, [user_id, name, phone, price, rating, review_count, closed, address_street, address_city,
-        address_state, address_zip_code, address_formatted, media, media_type]);
+      const result = await pool.query(query, [media, media_type, user_id, caption, place_id]);
       res.status(201).json(result.rows[0]);
     } catch (err) {
       console.error(err);
