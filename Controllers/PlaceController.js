@@ -15,7 +15,7 @@ const PlaceController = {
       const result = await pool.query(query, [name, phone, price, rating, review_count, closed, 
         address_street, address_city, address_state, address_zip_code, address_formatted, yelp_url, yelp_id, 
         image, longitude, latitude]);
-      res.status(201).json(result.rows[0]);
+      res.status(201).json(result.rows);
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
