@@ -1,4 +1,4 @@
-const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
+const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
 
 const PostsControllet = {
   createPost: async (req, res) => {
