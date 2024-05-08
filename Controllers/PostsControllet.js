@@ -43,7 +43,7 @@ const PostsControllet = {
   getPostById: (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT * FROM Posts WHERE user_id = ? LIMIT 1
+      SELECT * FROM Posts WHERE user_id = ?
     `
     connection.query(query, [id], (err, results) => {
         if(err){
@@ -52,22 +52,21 @@ const PostsControllet = {
         return res.status(201).send(results)
     });
   },
-  getPostByUserId: (req, res) => {
+  getPostByUserId: async (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT p.*, pr.* 
-      FROM Posts p
-      JOIN Places pr
-      ON p.place_id = pr.place_id
-      WHERE p.user_id = ? 
-    `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          console.log(err)
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results)
-    });
+      SELECT Posts.*, Places.*
+      FROM Posts
+      JOIN Places ON Posts.place_id = Places.place_id
+      WHERE Posts.user_id = $1
+    `;
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   getPostByPlaceId: (req, res) => {
     const {id} = req.params; 
