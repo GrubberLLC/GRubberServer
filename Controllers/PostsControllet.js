@@ -32,7 +32,7 @@ const PostsControllet = {
       ON p.user_id = pr.user_id
       ORDER BY p.created_at DESC LIMIT 100 OFFSET ?
     `;
-    connection.query(query, [offset], (err, results) => {
+    pool.query(query, [offset], (err, results) => {
       if (err) {
         console.log(JSON.stringify(err))
         return res.status(500).send(err.message);
@@ -45,7 +45,7 @@ const PostsControllet = {
     const query = `
       SELECT * FROM Posts WHERE user_id = ?
     `
-    connection.query(query, [id], (err, results) => {
+    pool.query(query, [id], (err, results) => {
         if(err){
           return res.status(500).send(err.message);
         } 
@@ -79,7 +79,7 @@ const PostsControllet = {
       ON p.user_id = u.user_id
       WHERE p.place_id = ? 
     `
-    connection.query(query, [id], (err, results) => {
+    pool.query(query, [id], (err, results) => {
         if(err){
           console.log(err)
           return res.status(500).send(err.message);
@@ -120,7 +120,7 @@ const PostsControllet = {
       WHERE 
         p.user_id = ?;
     `;
-    connection.query(query, [id, id], (err, results) => {
+    pool.query(query, [id, id], (err, results) => {
         if (err) {
             console.log(err)
             return res.status(500).send(err.message);
@@ -138,7 +138,7 @@ const PostsControllet = {
     location = ?, boosted = ?, visible = ? 
     WHERE post_id = ?
     `
-    connection.query(query, [user_id, content_url, place_id, caption, likes, 
+    pool.query(query, [user_id, content_url, place_id, caption, likes, 
       location, boosted, visible, id], (err, results) => {
         if(err){
           console.log(JSON.stringify(err))
@@ -152,7 +152,7 @@ const PostsControllet = {
     const query = `
     DELETE FROM Posts WHERE post_id = ?
     `
-    connection.query(query, [id], (err, results) => {
+    pool.query(query, [id], (err, results) => {
         if(err){
           return res.status(500).send(err.message);
         } 
