@@ -4,7 +4,7 @@ const PostsControllet = {
   createPost: async (req, res) => {
     const { media, media_type, user_id, caption, place_id } = req.body; 
     const query = `
-      INSERT INTO Profiles
+      INSERT INTO Posts
       (media, media_type, user_id, caption, place_id, created_at)
       VALUES ($1, $2, $3, $4, $5, NOW())
       RETURNING *;`;
