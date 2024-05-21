@@ -20,8 +20,8 @@ const PostCommentController = {
     const {post_id, comment, user_id, created_at} = req.body; 
     const query = `
       INSERT INTO PostComments 
-        (post_id, comment, user_id, created_at)
-      VALUES (?, ?, ?, NOW())
+      (post_id, comment, user_id, created_at)
+      VALUES ($1, $2, $3, NOW())
       RETURNING *;`;
     try {
       const result = await pool.query(query, [post_id, comment, user_id, created_at]);
