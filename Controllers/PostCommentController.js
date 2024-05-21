@@ -5,7 +5,7 @@ const PostCommentController = {
   createPost: (req, res) => {
     const { post_id, comment, user_id } = req.body; 
     const query = `
-      INSERT INTO PostComments 
+      INSERT INTO comments 
         (post_id, comment, user_id, created_at)
       VALUES ($1, $2, $3, NOW())`
     connection.query(query, [post_id, comment, user_id], (err, results) => {
@@ -19,7 +19,7 @@ const PostCommentController = {
   createPostCOmment: async (req, res) => {
     const {post_id, comment, user_id, created_at} = req.body; 
     const query = `
-      INSERT INTO PostComments 
+      INSERT INTO comments 
       (post_id, comment, user_id, created_at)
       VALUES ($1, $2, $3, NOW())
       RETURNING *;`;
