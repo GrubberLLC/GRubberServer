@@ -15,6 +15,21 @@ const PostCommentController = {
         return res.status(201).send(`Post created!`)
     });
   },
+  createPostCOmment: async (req, res) => {
+    const {post_id, comment, user_id, created_at} = req.body; 
+    const query = `
+      INSERT INTO PostComments 
+        (post_id, comment, user_id, created_at)
+      VALUES (?, ?, ?, NOW())
+      RETURNING *;`;
+    try {
+      const result = await pool.query(query, [post_id, comment, user_id, created_at]);
+      res.status(201).json(result.rows[0]);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
+  },
   getCommentByPostId: (req, res) => {
     const {id} = req.params; 
     const query = `
