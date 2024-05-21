@@ -55,9 +55,10 @@ const PostsControllet = {
   getPostByUserId: async (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT Posts.*, Places.*
+      SELECT Posts.*, Places.*, Profiles.*,
       FROM Posts
       JOIN Places ON Posts.place_id = Places.place_id
+      JOIN Profiles ON Posts.user_id = Profiles.user_id
       WHERE Posts.user_id = $1
     `;
     try {
