@@ -17,14 +17,14 @@ const PostCommentController = {
     });
   },
   createPostCOmment: async (req, res) => {
-    const {post_id, comment, user_id, created_at} = req.body; 
+    const {post_id, comment, user_id} = req.body; 
     const query = `
       INSERT INTO comments 
       (post_id, comment, user_id, created_at)
       VALUES ($1, $2, $3, NOW())
       RETURNING *;`;
     try {
-      const result = await pool.query(query, [post_id, comment, user_id, created_at]);
+      const result = await pool.query(query, [post_id, comment, user_id]);
       res.status(201).json(result.rows[0]);
     } catch (err) {
       console.error(err);
