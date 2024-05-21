@@ -1,4 +1,5 @@
 const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
+const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
 
 const PostCommentController = {
   createPost: (req, res) => {
