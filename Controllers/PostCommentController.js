@@ -7,7 +7,7 @@ const PostCommentController = {
     const query = `
       INSERT INTO PostComments 
         (post_id, comment, user_id, created_at)
-      VALUES (?, ?, ?, NOW())`
+      VALUES ($1, $2, $3, NOW())`
     connection.query(query, [post_id, comment, user_id], (err, results) => {
         if(err){
           console.log(JSON.stringify(err))
