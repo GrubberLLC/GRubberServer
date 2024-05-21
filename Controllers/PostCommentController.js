@@ -31,21 +31,23 @@ const PostCommentController = {
       res.status(500).send(err.message);
     }
   },
-  getCommentByPostId: (req, res) => {
+  getCommentByPostId: async (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT pc.*, p.*
-      FROM PostComments pc
-      JOIN Profiles p 
-      ON pc.user_id = p.user_id
-      WHERE post_id = ?
+      SELECT Comments.*, Profiles.*
+      FROM Comments
+      JOIN Profiles ON Profiles.user_id = Comments.user_id
+      WHERE Comment.post_id = $1
+      RETURNING *;
     `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results)
-    });
+    console.log(query)
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   deletePostById: (req, res) => {
     const {id} = req.params; 
