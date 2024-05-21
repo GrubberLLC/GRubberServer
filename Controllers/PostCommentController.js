@@ -37,8 +37,7 @@ const PostCommentController = {
       SELECT Comments.*, Profiles.*
       FROM Comments
       JOIN Profiles ON Profiles.user_id = Comments.user_id
-      WHERE Comment.post_id = $1
-      RETURNING *;
+      WHERE Comment.post_id = $1;
     `
     console.log(query)
     try {
