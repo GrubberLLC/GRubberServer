@@ -32,15 +32,15 @@ const PostCommentController = {
     }
   },
   getCommentByPostId: async (req, res) => {
-    const {id} = req.params; 
+    const { id } = req.params; 
     const query = `
       SELECT Comments.*, Profiles.*
       FROM Comments
       JOIN Profiles ON Profiles.user_id = Comments.user_id
-      WHERE Comments.post_id = 2
+      WHERE Comments.post_id = $1
       ORDER BY Comments.comment_id DESC;
-    `
-    console.log(query)
+    `;
+    console.log(query);
     try {
       const result = await pool.query(query, [id]);
       res.status(201).json(result.rows);
