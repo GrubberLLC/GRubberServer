@@ -148,17 +148,18 @@ const PostsControllet = {
         return res.status(201).send(`Profile successfully updated - ID: ${username} / ${id}`)
     });
   },
-  deletePostById: (req, res) => {
+  deletePostById: async (req, res) => {
     const {id} = req.params; 
     const query = `
-    DELETE FROM Posts WHERE post_id = ?
+      DELETE FROM Posts WHERE post_id = $1
     `
-    pool.query(query, [id], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(`Post successfully delete`)
-    });
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows[0]);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
 }
 
