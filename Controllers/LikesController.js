@@ -8,7 +8,7 @@ const LikesController = {
         ( post_id, user_id, created_at)
       VALUES ($1, $2, NOW())`; 
     try {
-      const result = await pool.query(query, [id]);
+      const result = await pool.query(query, [post_id, user_id]);
       res.status(201).json(result.rows);
     } catch (err) {
       console.error(err);
