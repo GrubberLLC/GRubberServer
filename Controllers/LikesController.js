@@ -15,6 +15,19 @@ const LikesController = {
       res.status(500).send(err.message);
     }
   },
+  getListByPost: async (req, res) => {
+    const {id} = req.params; 
+    const query = `
+      SELECT * FROM Likes WHERE post_id = $1
+    `
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
+  },
   getListByPostAndUser: async (req, res) => {
     const {post_id, user_id} = req.params; 
     const query = `
