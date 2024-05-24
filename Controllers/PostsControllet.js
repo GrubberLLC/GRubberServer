@@ -26,7 +26,6 @@ const PostsControllet = {
     `
     try {
       const result = await pool.query(query);
-      console.log(results)
       res.status(201).json(result);
     } catch (err) {
       console.error(err);
