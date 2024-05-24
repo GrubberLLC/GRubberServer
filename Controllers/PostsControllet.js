@@ -18,7 +18,12 @@ const PostsControllet = {
   },
   getAllPosts: async (req, res) => {
     const query = `
-      SELECT * FROM posts LIMIT 120`;
+      SELECT Posts.*, Places.*, Profiles.*
+      FROM Posts
+      JOIN Places ON Posts.place_id = Places.place_id
+      JOIN Profiles ON Posts.user_id = Profiles.user_id
+      LIMIT 120
+    `
     try {
       const result = await pool.query(query);
       res.status(201).json(result);
