@@ -16,6 +16,17 @@ const PostsControllet = {
       res.status(500).send(err.message);
     }
   },
+  getAllPosts: async (req, res) => {
+    const query = `
+      SELECT * FROM posts LIMIT 120`;
+    try {
+      const result = await pool.query(query);
+      res.status(201).json(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
+  },
   getAllPostsInBatch: (req, res) => {
     const {batch} = req.params; 
     if (!batch || batch < 1) {

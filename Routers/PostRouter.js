@@ -4,6 +4,7 @@ const PostRouter = express.Router();
 
 PostRouter.route('')
   .post(PostsControllet.createPost)
+  .get(PostsControllet.getAllPosts)
 
 PostRouter.route('/:id')
   .get(PostsControllet.getPostById)
