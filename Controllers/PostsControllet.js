@@ -88,13 +88,11 @@ const PostsControllet = {
   getPostByPlaceId: (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT p.*, pr.*, u.* 
-      FROM Posts p
-      JOIN Places pr
-      ON p.place_id = pr.place_id
-      JOIN Profiles u
-      ON p.user_id = u.user_id
-      WHERE p.place_id = ? 
+      SELECT Posts.*, Places.*, Profiles.*
+      FROM Posts
+      JOIN Places ON Posts.place_id = Places.place_id
+      JOIN Profiles ON Posts.user_id = Profiles.user_id
+      WHERE Posts.place_id = $1
     `
     pool.query(query, [id], (err, results) => {
         if(err){
