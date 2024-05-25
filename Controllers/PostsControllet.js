@@ -85,7 +85,7 @@ const PostsControllet = {
       res.status(500).send(err.message);
     }
   },
-  getPostByPlaceId: (req, res) => {
+  getPostByPlaceId: async (req, res) => {
     const {id} = req.params; 
     const query = `
       SELECT Posts.*, Places.*, Profiles.*
@@ -94,13 +94,13 @@ const PostsControllet = {
       JOIN Profiles ON Posts.user_id = Profiles.user_id
       WHERE Posts.place_id = $1
     `
-    pool.query(query, [id], (err, results) => {
-        if(err){
-          console.log(err)
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results)
-    });
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   getPostByFriendId: (req, res) => {
     const { id } = req.params; 
