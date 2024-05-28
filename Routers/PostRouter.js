@@ -23,4 +23,7 @@ PostRouter.route('/friend/:id')
 PostRouter.route('/place/:id')
   .get(PostsControllet.getPostByPlaceId)
 
+PostRouter.route('/yelp/:id')
+  .get(PostsControllet.getPostByYelpId)
+
 module.exports = PostRouter;
