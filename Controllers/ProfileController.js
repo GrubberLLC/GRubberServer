@@ -31,6 +31,17 @@ const ProfileController = {
       console.error(err);
       res.status(500).send(err.message);
     }
+  },
+  grabAllProfile: async (req, res) => {
+    const query = `
+      SELECT * FROM Profiles`;
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   }
 };
 

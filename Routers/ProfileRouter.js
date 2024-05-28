@@ -4,6 +4,7 @@ const ProfileRouter = express.Router();
 
 ProfileRouter.route('')
   .post(ProfileController.createProfile)
+  .get(ProfileController.grabAllProfile)
 
 ProfileRouter.route('/:id')
   .get(ProfileController.grabProfile)
