@@ -36,7 +36,7 @@ const ProfileController = {
     const query = `
       SELECT * FROM Profiles`;
     try {
-      const result = await pool.query(query, [id]);
+      const result = await pool.query(query);
       res.status(201).json(result.rows);
     } catch (err) {
       console.error(err);
