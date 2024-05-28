@@ -109,7 +109,7 @@ const PostsControllet = {
       FROM Posts
       JOIN Places ON Posts.place_id = Places.place_id
       JOIN Profiles ON Posts.user_id = Profiles.user_id
-      WHERE Place.yelp_id = $1
+      WHERE Posts.yelp_id = $1
     `
     try {
       const result = await pool.query(query, [id]);
