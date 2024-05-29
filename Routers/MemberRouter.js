@@ -3,7 +3,7 @@ const { MemberController } = require('../Controllers/MemberController');
 const MemberRouter = express.Router();
 
 MemberRouter.route('')
-  .post(MemberController.createMember)
+  .post(MemberController.createMembers)
 
 MemberRouter.route('/:id')
   .get(MemberController.getMemberById)

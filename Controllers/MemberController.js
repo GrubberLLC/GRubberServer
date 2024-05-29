@@ -1,19 +1,21 @@
 const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
+const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
+
 
 const MemberController = {
-  createMember: (req, res) => {
+  createMembers: async (req, res) => {
     const {user_id, list_id, status, type, sent_request} = req.body; 
     const query = `
-      INSERT INTO Members 
-        (user_id, list_id, status, type, sent_request, created_at)
-      VALUES (?, ?, ?, ?, ?, NOW())`
-    connection.query(query, [user_id, list_id, status, type, sent_request], (err, results) => {
-        if(err){
-          console.log(JSON.stringify(err))
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(`Member created`)
-    });
+    INSERT INTO Members 
+      (user_id, list_id, status, type, sent_request, created_at)
+    VALUES ($1, $2, $3, $4, $5, NOW())`
+    try {
+      const result = await pool.query(query, [user_id, list_id, status, type, sent_request]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   getMemberById: (req, res) => {
     const {id} = req.params; 
