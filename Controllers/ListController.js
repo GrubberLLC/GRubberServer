@@ -7,7 +7,7 @@ const ListController = {
     const query = `
       INSERT INTO Lists 
         (name, description, picture, public, last_activity, created_by, created_at)
-      VALUES ($1, $2, $3, $4, $5, $6, NOW())`; 
+      VALUES ($1, $2, $3, $4, $5, $6, NOW()) RETURNING *`; 
     try {
       const result = await pool.query(query, [name, description, picture, public, last_activity, created_by]);
       res.status(201).json(result.rows);
