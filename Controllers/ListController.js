@@ -1,19 +1,20 @@
-const connection = require('../bin/utils/AwsDbConnect');
+const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
+
 
 const ListController = {
-  createList: (req, res) => {
-    const { name, description, picture, last_activity, public, created_by } = req.body; 
+  createList: async (req, res) => {
+    const { name, description, picture, public, last_activity, created_by } = req.body; 
     const query = `
       INSERT INTO Lists 
-        (name, description, picture, last_activity, public, created_by, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())`; 
-    connection.query(query, [name, description, picture, last_activity, public, created_by], (err, results) => {
-        if(err){
-          console.error('Error creating list: ' + err.message);
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results);
-    });
+        (name, description, picture, public, last_activity, created_by, created_at)
+      VALUES ($1, $2, $3, $4, $5, $6, NOW())`; 
+    try {
+      const result = await pool.query(query, [name, description, picture, public, last_activity, created_by]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   getListById: (req, res) => {
     const {id} = req.params; 
