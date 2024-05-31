@@ -55,22 +55,22 @@ const ListController = {
         return res.status(201).send(`List successfully delete`)
     });
   },
-  getListByUserId: (req, res) => {
-    const {id} = req.params; 
+  getListByUserId: async (req, res) => {
+    const { id } = req.body; 
     const query = `
-      SELECT m.*, l.*
-      FROM Lists l
-      JOIN Members m
-      ON m.list_id = l.list_id
-      WHERE m.user_id = ?
-    `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          console.log(err)
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results)
-    });
+        SELECT l.* 
+        FROM lists l
+        INNER JOIN members m ON l.list_id = m.list_id
+        WHERE m.user_id = $1 AND m.status = 'active'
+        RETURNING *
+    `;
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   updateListPublic: (req, res) => {
     const {id} = req.params; 
