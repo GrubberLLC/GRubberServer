@@ -58,9 +58,9 @@ const ListController = {
   getListByUserId: async (req, res) => {
     const { id } = req.body; 
     const query = `
-        SELECT l.* 
-        FROM lists l
-        INNER JOIN members m ON l.list_id = m.list_id
+        SELECT m.* 
+        FROM members m
+        INNER JOIN lists l ON m.list_id = l.list_id
         WHERE m.user_id = $1 AND m.status = 'active'
     `;
     try {
