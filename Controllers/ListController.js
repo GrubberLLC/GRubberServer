@@ -62,7 +62,6 @@ const ListController = {
         FROM lists l
         INNER JOIN members m ON l.list_id = m.list_id
         WHERE m.user_id = $1 AND m.status = 'active'
-        RETURNING *
     `;
     try {
       const result = await pool.query(query, [id]);
