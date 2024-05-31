@@ -58,11 +58,10 @@ const ListController = {
   getListByUserId: async (req, res) => {
     const { id } = req.body; 
     const query = `
-        SELECT m.* 
+      SELECT m.*, l.*
         FROM members m
         INNER JOIN lists l ON m.list_id = l.list_id
-        WHERE m.user_id = $1 AND m.status = 'active'
-    `;
+        WHERE m.user_id = $1 AND m.status = 'active'`
     try {
       const result = await pool.query(query, [id]);
       res.status(201).json(result.rows);
