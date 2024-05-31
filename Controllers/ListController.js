@@ -57,6 +57,7 @@ const ListController = {
   },
   getListByUserId: async (req, res) => {
     const { id } = req.body; 
+    console.log('user id: ', id)
     const query = `
       SELECT m.*, l.*
         FROM members m
@@ -64,6 +65,7 @@ const ListController = {
         WHERE m.user_id = $1 AND m.status = 'active'`
     try {
       const result = await pool.query(query, [id]);
+      console.log(result)
       res.status(201).json(result.rows);
     } catch (err) {
       console.error(err);
