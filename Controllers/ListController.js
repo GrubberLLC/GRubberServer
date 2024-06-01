@@ -65,7 +65,7 @@ const ListController = {
         WHERE m.user_id = $1 AND m.status = 'active'`
     try {
       const result = await pool.query(query, [id]);
-      console.log(result)
+      console.log(result.rows)
       res.status(201).json(result.rows);
     } catch (err) {
       console.error(err);
