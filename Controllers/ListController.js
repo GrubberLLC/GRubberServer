@@ -56,7 +56,7 @@ const ListController = {
     });
   },
   getListByUserId: async (req, res) => {
-    const { id } = req.body; 
+    const { id } = req.params; 
     console.log('user id: ', id)
     const query = `
       SELECT m.*, l.*
