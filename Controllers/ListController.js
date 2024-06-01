@@ -3,13 +3,13 @@ const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessa
 
 const ListController = {
   createList: async (req, res) => {
-    const { user_id, description, picture, public, last_activity, created_by } = req.body; 
+    const { user_id, name, description, picture, public, last_activity, created_by } = req.body; 
     const query = `
       INSERT INTO Lists 
-        (user_id, description, picture, public, last_activity, created_by, created_at)
-      VALUES ($1, $2, $3, $4, $5, $6, NOW()) RETURNING *`; 
+        (user_id, name, description, picture, public, last_activity, created_by, created_at)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, NOW()) RETURNING *`; 
     try {
-      const result = await pool.query(query, [user_id, description, picture, public, last_activity, created_by]);
+      const result = await pool.query(query, [user_id, name, description, picture, public, last_activity, created_by]);
       res.status(201).json(result.rows);
     } catch (err) {
       console.error(err);
