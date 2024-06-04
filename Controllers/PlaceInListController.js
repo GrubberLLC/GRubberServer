@@ -8,7 +8,7 @@ const PlaceInListController = {
         (place_id, list_id, created_at)
       VALUES ($1, $2, NOW())`
     try {
-      const result = await pool.query(query, [user_id, name, description, picture, public, last_activity, created_by]);
+      const result = await pool.query(query, [place_id, list_id]);
       res.status(201).json(result.rows);
     } catch (err) {
       console.error(err);
