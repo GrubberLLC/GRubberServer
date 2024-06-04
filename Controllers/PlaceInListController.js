@@ -1,18 +1,19 @@
-const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
+const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
 
 const PlaceInListController = {
-  createPlaceInList: (req, res) => {
+  createPlaceInList: async (req, res) => {
     const {place_id, list_id} = req.body; 
     const query = `
       INSERT INTO PlaceInList 
         (place_id, list_id, created_at)
-      VALUES (?, ?, NOW())`
-    connection.query(query, [place_id, list_id], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(`PlaceInList created with ID: ${results.insertId}`)
-    });
+      VALUES ($1, $2, NOW())`
+    try {
+      const result = await pool.query(query, [user_id, name, description, picture, public, last_activity, created_by]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   getPlaceInListById: (req, res) => {
     const {id} = req.params; 
@@ -26,23 +27,23 @@ const PlaceInListController = {
         return res.status(201).send(results)
     });
   },
-  getPlaceInListByListId: (req, res) => {
+  getPlaceInListByListId: async (req, res) => {
     const {id} = req.params; 
     console.log(id)
     const query = `
-      SELECT pl.*, p.*
-      FROM PlaceInList pl
-      JOIN Places p
-      ON pl.place_id = p.place_id
-      WHERE list_id = ?
+      SELECT Places.*, PlaceInLists.*
+      FROM PlaceInLists
+      JOIN Places
+      ON Places.place_id = PlaceInLists.place_id
+      WHERE list_id = $1
     `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          console.log(JSON.stringify(err))
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results)
-    });
+    try {
+      const result = await pool.query(query, [user_id, name, description, picture, public, last_activity, created_by]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   updatePlaceInListById: (req, res) => {
     const {id} = req.params; 
