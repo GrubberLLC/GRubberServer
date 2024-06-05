@@ -36,23 +36,26 @@ const MemberController = {
         return res.status(201).send(results)
     });
   },
-  getMemberByListId: (req, res) => {
-    const {id} = req.params; 
+  getMemberByListId: async (req, res) => {
+    const { id } = req.params; 
     const query = `
-      SELECT p.*, m.* 
-      FROM Members m
-      JOIN Profiles p 
-      ON m.user_id = p.user_id
-      WHERE list_id = ?
-    `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          console.log(err)
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results)
-    });
-  },
+      SELECT Profiles.*, Members.* 
+      FROM Members
+      JOIN Profiles ON Members.user_id = Profiles.user_id
+      WHERE Members.list_id = $1
+    `;
+    try {
+      const result = await pool.query(query, [id]);
+      if (result.rows.length > 0) {
+        res.status(200).json(result.rows);
+      } else {
+        res.status(404).send('No members found for this list');
+      }
+    } catch (err) {
+      console.error('Database error:', err);
+      res.status(500).send(err.message);
+    }
+  }
   getPendingMemberByMemberId: (req, res) => {
     const {id} = req.params; 
     const query = `
