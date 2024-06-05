@@ -18,7 +18,7 @@ const PlaceInListController = {
   getPlaceInListById: async (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT Places.name AS name Places.*, Lists.name AS list_name, Lists.*, PlaceInList.*
+      SELECT Places.name AS name, Places.*, Lists.name AS list_name, Lists.*, PlaceInList.*
       FROM PlaceInList
       JOIN Places ON PlaceInList.place_id = Places.place_id
       JOIN Lists ON PlaceInList.list_id = Lists.list_id
