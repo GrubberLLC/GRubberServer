@@ -22,7 +22,7 @@ const PlaceInListController = {
       FROM PlaceInList
       JOIN Places ON PlaceInList.place_id = Places.place_id
       JOIN Lists ON PlaceInList.list_id = Lists.list_id
-      WHERE PlaceInList.place_list_id = $1
+      WHERE PlaceInList.list_id = $1
     `
     try {
       const result = await pool.query(query, [id]);
