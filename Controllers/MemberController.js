@@ -55,7 +55,7 @@ const MemberController = {
       console.error('Database error:', err);
       res.status(500).send(err.message);
     }
-  }
+  },
   getPendingMemberByMemberId: (req, res) => {
     const {id} = req.params; 
     const query = `
