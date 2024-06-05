@@ -15,17 +15,22 @@ const PlaceInListController = {
       res.status(500).send(err.message);
     }
   },
-  getPlaceInListById: (req, res) => {
+  getPlaceInListById: async (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT * FROM PlaceInList WHERE pl_id = ?
+      SELECT Places.*, Lists.*, PlaceInList.*
+      FROM PlaceInList
+      JOIN Places ON PlaceInList.place_id = Places.place_id
+      JOIN Lists ON PlaceInList.list_id = Lists.list_id
+      WHERE PlaceInList.place_list_id = $1
     `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results)
-    });
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   getPlaceInListByListId: async (req, res) => {
     const {id} = req.params; 
