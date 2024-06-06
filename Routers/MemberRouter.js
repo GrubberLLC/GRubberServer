@@ -17,6 +17,12 @@ MemberRouter.route('/list/pending/:id')
   .get(MemberController.getPendingMemberByMemberId)
 
 MemberRouter.route('/request/:id')
+  .get(MemberController.allMemberRequestById)
+
+MemberRouter.route('/request/accept/:id')
   .put(MemberController.acceptMemberRequestById)
+
+MemberRouter.route('/request/reject/:id')
+  .delete(MemberController.rejectMemberRequestById)
 
 module.exports = MemberRouter;

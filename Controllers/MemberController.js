@@ -74,20 +74,56 @@ const MemberController = {
         return res.status(201).send(results)
     });
   },
-  acceptMemberRequestById: (req, res) => {
-    const {id} = req.params; 
+  acceptMemberRequestById: async (req, res) => {
+    const { id } = req.params; 
     const query = `
-    UPDATE Members
-    SET type = 'active'
-    WHERE member_id = ?
-    `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          console.log(err)
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(`Member successfully updated - ID: ${id}`)
-    });
+      UPDATE Members
+        SET type = 'active'
+        WHERE member_id = $1
+    `;
+    try {
+      const result = await pool.query(query, [id]);
+      if (result.rows.length > 0) {
+        res.status(200).json(result.rows);
+      }
+    } catch (err) {
+      console.error('Database error:', err);
+      res.status(500).send(err.message);
+    }
+  },
+  rejectMemberRequestById: async (req, res) => {
+    const { id } = req.params; 
+    const query = `
+      DELETE FROM Members WHERE member_id = $1
+    `;
+    try {
+      const result = await pool.query(query, [id]);
+      if (result.rows.length > 0) {
+        res.status(200).json(result.rows);
+      }
+    } catch (err) {
+      console.error('Database error:', err);
+      res.status(500).send(err.message);
+    }
+  },
+  allMemberRequestById: async (req, res) => {
+    const { id } = req.params; 
+    const query = `
+      SELECT Members.*, Profiles.*, Lists.*
+        FROM Members
+        JOIN Profiles ON Members.sent_request = Profiles.user_id
+        JOIN Lists ON Members.list_id = Lists.list_id
+        WHERE Members.user_id = $1
+    `;
+    try {
+      const result = await pool.query(query, [id]);
+      if (result.rows.length > 0) {
+        res.status(200).json(result.rows);
+      }
+    } catch (err) {
+      console.error('Database error:', err);
+      res.status(500).send(err.message);
+    }
   },
   updateMemberById: (req, res) => {
     const {id} = req.params; 
