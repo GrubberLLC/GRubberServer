@@ -113,7 +113,7 @@ const MemberController = {
         FROM Members
         JOIN Profiles ON Members.sent_request = Profiles.user_id
         JOIN Lists ON Members.list_id = Lists.list_id
-        WHERE Members.user_id = $1
+        WHERE Members.user_id = $1 AND Members.status = 'pending'
     `;
     try {
       const result = await pool.query(query, [id]);
