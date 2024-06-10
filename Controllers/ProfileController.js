@@ -38,7 +38,7 @@ const ProfileController = {
       SELECT * FROM Profiles
       WHERE username ILIKE $1 OR full_name ILIKE $1`;
     try {
-      const result = await pool.query(query, [term]);
+      const result = await pool.query(query, [`%${term}%`]);
       res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);
