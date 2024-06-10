@@ -146,7 +146,7 @@ const FriendController = {
   deleteFriendById: async (req, res) => {
     const {id} = req.params; 
     const query = `
-    DELETE FROM Friends WHERE friend_id = ?
+    DELETE FROM Friends WHERE friend_ids = ?
     `
     try {
       const result = await pool.query(query, [id]);
