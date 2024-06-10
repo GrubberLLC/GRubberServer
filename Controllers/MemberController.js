@@ -94,7 +94,7 @@ const MemberController = {
   rejectMemberRequestById: async (req, res) => {
     const { id } = req.params; 
     const query = `
-      DELETE FROM Members WHERE member_id = $1
+      DELETE FROM Members WHERE member_id = $1xc
     `;
     try {
       const result = await pool.query(query, [id]);

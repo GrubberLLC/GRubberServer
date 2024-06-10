@@ -1,21 +1,20 @@
-const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
+const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
 
 const FriendController = {
-  createFriend: (req, res) => {
+  createFriend: async (req, res) => {
     console.log('create friends')
-    const {follower_id, following_id, status} = req.body; 
+    const {follower_id, following_id, status, type} = req.body; 
     const query = `
       INSERT INTO Friends 
-        (follower_id, following_id, status, created_at)
-      VALUES (?, ?, ?, NOW())`
-    connection.query(query, [follower_id, following_id, status], (err, results) => {
-        if(err){
-          console.log(JSON.stringify(err))
-          return res.status(500).send(err.message);
-        } 
-        console.log(results)
-        return res.status(201).send({id: results.insertId})
-    });
+        (follower_id, following_id, status, type, created_at)
+      VALUES ($1, $2, $3, $4, NOW())`
+      try {
+        const result = await pool.query(query, [follower_id, following_id, status, type]);
+        res.status(201).json(result.rows[0]);
+      } catch (err) {
+        console.error(err);
+        res.status(500).send(err.message);
+      }
   },
   getFriendById: (req, res) => {
     const {id} = req.params; 
@@ -29,38 +28,39 @@ const FriendController = {
         return res.status(201).send(results)
     });
   },
-  getFollowersByUserIs: (req, res) => {
+  getFollowersByUserIs: async (req, res) => {
     const {id} = req.params; 
     const query = `
       SELECT f.*, p.* 
       FROM Friends f
       JOIN Profiles p
       ON f.following_id = p.user_id
-      WHERE f.follower_id = ?
+      WHERE f.follower_id = $1
     `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results)
-    });
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
-  getFolloweringByUserIs: (req, res) => {
+  getFolloweringByUserIs: async (req, res) => {
     const {id} = req.params; 
     const query = `
       SELECT f.*, p.* 
       FROM Friends f
       JOIN Profiles p
       ON f.follower_id = p.user_id
-      WHERE f.status = 'pending' AND f.following_id = ?
+      WHERE f.status = 'pending' AND f.following_id = $1
     `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          console.log(JSON.stringify(err))
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results)
-    });
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   getAllFollowersByUserIs: (req, res) => {
     const {id} = req.params; 
