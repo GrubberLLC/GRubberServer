@@ -52,7 +52,7 @@ const FriendController = {
       FROM Friends f
       JOIN Profiles p
       ON f.following_id = p.user_id
-      f.follower_id = $1
+      WHERE f.follower_id = $1
     `
     try {
       const result = await pool.query(query, [id]);
@@ -62,22 +62,22 @@ const FriendController = {
       res.status(500).send(err.message);
     }
   },
-  getAllFollowersByUserIs: (req, res) => {
+  getAllFollowersByUserIs: async (req, res) => {
     const {id} = req.params; 
     const query = `
       SELECT f.*, p.*
       FROM Friends f
       JOIN Profiles p
-      ON f.following_id = p.user_id
-      WHERE status = 'active' 
-      AND follower_id = ?
+      ON f.follower_id = p.user_id
+      WHERE f.following_id = $1
     `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        res.status(201).send(results)
-    });
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   getAllFollowingByUserIs: (req, res) => {
     const {id} = req.params; 
