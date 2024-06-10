@@ -14,7 +14,7 @@ FriendRouter.route('/follower/:id')
   .get(FriendController.getFollowersByUserIs)
 
 FriendRouter.route('/following/:id')
-  .get(FriendController.getFolloweringByUserIs)
+  .get(FriendController.getFollowingByUserIs)
 
 FriendRouter.route('/accept/:id')
   .put(FriendController.acceptFriendRequest)

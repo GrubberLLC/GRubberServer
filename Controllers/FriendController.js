@@ -45,14 +45,14 @@ const FriendController = {
       res.status(500).send(err.message);
     }
   },
-  getFolloweringByUserIs: async (req, res) => {
+  getFollowingByUserIs: async (req, res) => {
     const {id} = req.params; 
     const query = `
       SELECT f.*, p.* 
       FROM Friends f
       JOIN Profiles p
-      ON f.follower_id = p.user_id
-      WHERE f.status = 'pending' AND f.following_id = $1
+      ON f.following_id = p.user_id
+      f.follower_id = $1
     `
     try {
       const result = await pool.query(query, [id]);
