@@ -143,17 +143,18 @@ const FriendController = {
         return res.status(201).send(`Friend successfully updated - ID: ${id}`)
     });
   },
-  deleteFriendById: (req, res) => {
+  deleteFriendById: async (req, res) => {
     const {id} = req.params; 
     const query = `
     DELETE FROM Friends WHERE friend_id = ?
     `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(`Friendds successfully delete`)
-    });
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
 }
 
