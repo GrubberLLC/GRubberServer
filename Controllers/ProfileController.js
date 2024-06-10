@@ -32,6 +32,19 @@ const ProfileController = {
       res.status(500).send(err.message);
     }
   },
+  searchProfiles: async (req, res) => {
+    const { term } = req.params;
+    const query = `
+      SELECT * FROM Profiles
+      WHERE username ILIKE $1 OR name ILIKE $1`;
+    try {
+      const result = await pool.query(query, [term]);
+      res.status(200).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
+  },
   grabAllProfile: async (req, res) => {
     const query = `
       SELECT * FROM Profiles`;

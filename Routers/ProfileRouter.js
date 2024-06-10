@@ -9,4 +9,7 @@ ProfileRouter.route('')
 ProfileRouter.route('/:id')
   .get(ProfileController.grabProfile)
 
+ProfileRouter.route('/search/:term')
+  .get(ProfileController.searchProfiles)
+
 module.exports = ProfileRouter;
