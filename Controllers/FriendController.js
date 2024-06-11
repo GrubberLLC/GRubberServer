@@ -50,7 +50,7 @@ const FriendController = {
     const query = `
       SELECT pr.*
       FROM Friends f
-      JOIN Profiles pr ON p.user_id = f.follower_id
+      JOIN Profiles pr ON pr.user_id = f.follower_id
       WHERE f.following_id = $1 AND f.status = 'pending'
     `;
     try {
