@@ -119,47 +119,65 @@ const PostsControllet = {
       res.status(500).send(err.message);
     }
   },
-  getPostByFriendId: (req, res) => {
+  // getPostByFriendId: (req, res) => {
+  //   const { id } = req.params; 
+  //   const query = `
+  //     SELECT p.*, f.*, pl.*, pr.*
+  //     FROM Posts p
+  //     JOIN Friends f
+  //     ON p.user_id = f.following_id
+  //     JOIN Places pl
+  //     ON p.place_id = pl.place_id
+  //     JOIN Profiles pr
+  //     ON p.user_id = pr.user_id
+  //     WHERE f.follower_id = ? 
+
+  //     UNION
+      
+  //     SELECT 
+  //       p.*, 
+  //       NULL as friend_id, 
+  //       NULL as follower_id, 
+  //       NULL as following_id, 
+  //       NULL as status,
+  //       NULL as created_at,
+  //       pl.*, 
+  //       pr.*
+  //     FROM 
+  //       Posts p
+  //     JOIN Places pl 
+  //     ON p.place_id = pl.place_id
+  //     JOIN Profiles pr 
+  //     ON p.user_id = pr.user_id
+  //     WHERE 
+  //       p.user_id = ?;
+  //   `;
+  //   pool.query(query, [id, id], (err, results) => {
+  //       if (err) {
+  //           console.log(err)
+  //           return res.status(500).send(err.message);
+  //       } 
+  //       return res.status(201).send(results)
+  //   });
+  // },  
+  getPostByFriendId: async (req, res) => {
     const { id } = req.params; 
     const query = `
-      SELECT p.*, f.*, pl.*, pr.*
-      FROM Posts p
-      JOIN Friends f
-      ON p.user_id = f.following_id
-      JOIN Places pl
-      ON p.place_id = pl.place_id
-      JOIN Profiles pr
-      ON p.user_id = pr.user_id
-      WHERE f.follower_id = ? 
-
-      UNION
-      
-      SELECT 
-        p.*, 
-        NULL as friend_id, 
-        NULL as follower_id, 
-        NULL as following_id, 
-        NULL as status,
-        NULL as created_at,
-        pl.*, 
-        pr.*
-      FROM 
-        Posts p
-      JOIN Places pl 
-      ON p.place_id = pl.place_id
-      JOIN Profiles pr 
-      ON p.user_id = pr.user_id
-      WHERE 
-        p.user_id = ?;
+      SELECT p.*, pl.*, pr.*
+      FROM Friends f
+      JOIN Posts p ON p.user_id = f.following_id
+      JOIN Places pl ON p.place_id = pl.place_id
+      JOIN Profiles pr ON p.user_id = pr.user_id
+      WHERE f.follower_id = $1 AND f.status = 'active'
     `;
-    pool.query(query, [id, id], (err, results) => {
-        if (err) {
-            console.log(err)
-            return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results)
-    });
-  },  
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
+  },
   updatePostById: (req, res) => {
     const {id} = req.params; 
     const { user_id, content_url, place_id, caption, likes, 
