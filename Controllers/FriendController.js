@@ -144,20 +144,20 @@ const FriendController = {
         return res.status(201).send(`Friend successfully updated - ID: ${id}`)
     });
   },
-  acceptFriendRequest: (req, res) => {
+  acceptFriendRequest: async (req, res) => {
     const {id} = req.params; 
     const query = `
     UPDATE Friends
     SET status = 'active'
-    WHERE friend_id = ?
+    WHERE friends_id = $1
     `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          console.log(JSON.stringify(err))
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(`Friend successfully updated - ID: ${id}`)
-    });
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   deleteFriendById: async (req, res) => {
     const {id} = req.params; 
