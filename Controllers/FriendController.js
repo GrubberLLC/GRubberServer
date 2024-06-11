@@ -34,8 +34,8 @@ const FriendController = {
       SELECT f.*, p.* 
       FROM Friends f
       JOIN Profiles p
-      ON f.following_id = p.user_id
-      WHERE f.follower_id = $1
+      ON f.follower_id = p.user_id
+      WHERE f.following_id = $1
     `
     try {
       const result = await pool.query(query, [id]);
@@ -51,8 +51,8 @@ const FriendController = {
       SELECT f.*, p.* 
       FROM Friends f
       JOIN Profiles p
-      ON f.followers_id = p.user_id
-      WHERE f.following_id = $1
+      ON f.following_id = p.user_id
+      WHERE f.follower_id = $1
     `
     try {
       const result = await pool.query(query, [id]);
