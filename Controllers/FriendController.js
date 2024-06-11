@@ -48,7 +48,7 @@ const FriendController = {
   getFriendRequestsById: async (req, res) => {
     const { id } = req.params; 
     const query = `
-      SELECT pr.*
+      SELECT pr.*, f.*
       FROM Friends f
       JOIN Profiles pr ON pr.user_id = f.following_id
       WHERE f.follower_id = $1 AND f.status = 'pending'
