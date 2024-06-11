@@ -45,6 +45,22 @@ const FriendController = {
       res.status(500).send(err.message);
     }
   },
+  getFriendRequestsById: async (req, res) => {
+    const { id } = req.params; 
+    const query = `
+      SELECT pr.*
+      FROM Friends f
+      JOIN Profiles pr ON p.user_id = f.follower_id
+      WHERE f.following_id = $1 AND f.status = 'pending'
+    `;
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
+  },
   getFollowingByUserIs: async (req, res) => {
     const {id} = req.params; 
     const query = `

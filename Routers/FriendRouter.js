@@ -28,4 +28,7 @@ FriendRouter.route('/follower-count/:id')
 FriendRouter.route('/relation/:userId/:friendId')
   .get(FriendController.getFriendByIds)
 
+FriendRouter.route('/requests/:id')
+  .get(FriendController.getFriendRequestsById)
+
 module.exports = FriendRouter;
