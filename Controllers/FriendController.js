@@ -50,8 +50,8 @@ const FriendController = {
     const query = `
       SELECT pr.*, f.*
       FROM Friends f
-      JOIN Profiles pr ON pr.user_id = f.following_id
-      WHERE f.follower_id = $1 AND f.status = 'pending'
+      JOIN Profiles pr ON pr.user_id = f.follower_id
+      WHERE f.followering_id = $1 AND f.status = 'pending'
     `;
     try {
       const result = await pool.query(query, [id]);
