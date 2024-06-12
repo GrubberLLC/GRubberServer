@@ -22,7 +22,8 @@ const PostsControllet = {
       FROM Posts
       JOIN Places ON Posts.place_id = Places.place_id
       JOIN Profiles ON Posts.user_id = Profiles.user_id
-      LIMIT 120
+      ORDER BY Posts.created_at DESC
+      LIMIT 120;
     `
     try {
       const result = await pool.query(query);
