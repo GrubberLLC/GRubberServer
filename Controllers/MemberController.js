@@ -78,7 +78,7 @@ const MemberController = {
     const { id } = req.params; 
     const query = `
       UPDATE Members
-        SET active = 'active'
+        SET status = 'active'
         WHERE member_id = $1
     `;
     try {
