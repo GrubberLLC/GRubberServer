@@ -1,30 +1,32 @@
-const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
+const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
 
 const FavoriteController = {
-  createFavorite: (req, res) => {
-    const {user_id, place_id, list_id} = req.body; 
+  createFavorite: async (req, res) => {
+    const {user_id, place_id, post_id, list_id} = req.body; 
     const query = `
       INSERT INTO Favorites 
-        (user_id, place_id, list_id, created_at)
-      VALUES (?, ?, ?, NOW())`
-    connection.query(query, [user_id, place_id, list_id], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send({id: results.insertId})
-    });
+        (user_id, place_id, post_id, list_id, created_at)
+      VALUES ($1, $2, $3, $4, NOW())`
+      try {
+        const result = await pool.query(query, [user_id, place_id, post_id, list_id]);
+        res.status(201).json(result.rows);
+      } catch (err) {
+        console.error(err);
+        res.status(500).send(err.message);
+      }
   },
-  getFavoriteById: (req, res) => {
+  getFavoriteById: async (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT * FROM Favorites WHERE favorites_id = ?
+      SELECT * FROM Favorites WHERE user_id = $1
     `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(results)
-    });
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   getFavoriteByUserId: (req, res) => {
     const {id} = req.params; 
