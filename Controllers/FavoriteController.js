@@ -60,17 +60,18 @@ const FavoriteController = {
         return res.status(201).send(`Favorites successfully updated - ID: ${id}`)
     });
   },
-  deleteFavoriteById: (req, res) => {
+  deleteFavoriteById: async (req, res) => {
     const {id} = req.params; 
     const query = `
-    DELETE FROM Favorites WHERE favorites_id = ?
+    DELETE FROM Favorites WHERE favorites_id = $1
     `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(`Favorite successfully delete`)
-    });
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
 }
 
