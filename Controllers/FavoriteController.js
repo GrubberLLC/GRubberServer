@@ -16,10 +16,21 @@ const FavoriteController = {
       }
   },
   getFavoriteById: async (req, res) => {
-    const {id} = req.params; 
+    const { id } = req.params; 
     const query = `
-      SELECT * FROM Favorites WHERE user_id = $1
-    `
+      SELECT
+        f.*,
+        p.*,
+        l.*,
+        pl.*
+      FROM
+        Favorites f
+      LEFT JOIN Posts p ON f.post_id = p.post_id
+      LEFT JOIN Lists l ON f.list_id = l.list_id
+      LEFT JOIN Places pl ON f.place_id = pl.place_id
+      WHERE
+        f.user_id = $1
+    `;
     try {
       const result = await pool.query(query, [id]);
       res.status(201).json(result.rows);
@@ -28,6 +39,7 @@ const FavoriteController = {
       res.status(500).send(err.message);
     }
   },
+  
   getFavoriteByUserId: (req, res) => {
     const {id} = req.params; 
     const query = `
