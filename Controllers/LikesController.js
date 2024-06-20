@@ -31,7 +31,10 @@ const LikesController = {
   getLikesByUserId: async (req, res) => {
     const {id} = req.params; 
     const query = `
-      SELECT * FROM Likes WHERE user_id = $1
+      SELECT Posts.*, Likes.* 
+        FROM Likes
+        JOIN Posts ON Lists.post_id = Posts.post_id
+        WHERE Likes.user_id = $1
     `
     try {
       const result = await pool.query(query, [id]);
