@@ -33,7 +33,7 @@ const LikesController = {
     const query = `
       SELECT Posts.*, Likes.* 
         FROM Likes
-        JOIN Posts ON Lists.post_id = Posts.post_id
+        JOIN Posts ON Likes.post_id = Posts.post_id
         WHERE Likes.user_id = $1
     `
     try {
