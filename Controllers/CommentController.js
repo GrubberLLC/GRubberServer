@@ -60,6 +60,21 @@ const CommentController = {
         return res.status(201).send(results)
     });
   },
+  getCommentByUserId: (req, res) => {
+    const {id} = req.params; 
+    const query = `
+      SELECT DISTINCT ON (post_id) *
+        FROM comments
+        WHERE user_id = $1
+        ORDER BY post_id, created_at DESC;
+    `
+    connection.query(query, [id], (err, results) => {
+        if(err){
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(results)
+    });
+  },
   updateCommentById: (req, res) => {
     const {id} = req.params; 
     const {user_id, image, comment, rating, place_favorite_id, place_list_id} = req.body
