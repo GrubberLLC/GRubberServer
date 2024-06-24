@@ -13,6 +13,9 @@ CommentRouter.route('/:id')
 CommentRouter.route('/pl/:id')
   .get(CommentController.getCommentByPlId)
 
+CommentRouter.route('/user/:id')
+  .get(CommentController.getCommentByUserId)
+
 CommentRouter.route('/place/:id')
   .get(CommentController.getCommentByPlaceId)
 
