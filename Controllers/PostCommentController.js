@@ -49,6 +49,24 @@ const PostCommentController = {
       res.status(500).send(err.message);
     }
   },
+  getCommentByUserId: async (req, res) => {
+    const { id } = req.params; 
+    const query = `
+      SELECT DISTINCT ON (c.post_id) p.*
+      FROM comments c
+      JOIN posts p ON c.post_id = p.post_id
+      WHERE c.user_id = $1
+      ORDER BY c.post_id, c.created_at DESC;
+    `;
+    console.log(query);
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
+  },
   deletePostById: (req, res) => {
     const {id} = req.params; 
     const query = `

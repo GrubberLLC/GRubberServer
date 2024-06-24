@@ -5,6 +5,9 @@ const PostCommentRouter = express.Router();
 PostCommentRouter.route('')
   .post(PostCommentController.createPostCOmment)
 
+CommentRouter.route('/user/:id')
+  .get(CommentController.getCommentByUserId)
+
 PostCommentRouter.route('/:id')
   .get(PostCommentController.getCommentByPostId)
   .delete(PostCommentController.deletePostById)
