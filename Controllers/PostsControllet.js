@@ -138,24 +138,21 @@ const PostsControllet = {
       res.status(500).send(err.message);
     }
   },
-  updatePostById: (req, res) => {
+  updatePostById: async (req, res) => {
     const {id} = req.params; 
-    const { user_id, content_url, place_id, caption, likes, 
-      location, boosted, visible } = req.body; 
+    const {media, media_type, user_id, caption, place_id} = req.body; 
     const query = `
     UPDATE Posts
-    SET user_id = ?, content_url = ?, place_id = ?, caption = ?, likes = ?,
-    location = ?, boosted = ?, visible = ? 
-    WHERE post_id = ?
+    SET media = $1, media_type = $2, user_id = $3, caption = $4, place_id = $5
+    WHERE post_id = $6
     `
-    pool.query(query, [user_id, content_url, place_id, caption, likes, 
-      location, boosted, visible, id], (err, results) => {
-        if(err){
-          console.log(JSON.stringify(err))
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(`Profile successfully updated - ID: ${username} / ${id}`)
-    });
+    try {
+      const result = await pool.query(query, [media, media_type, user_id, caption, place_id, id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   deletePostById: async (req, res) => {
     const {id} = req.params; 
