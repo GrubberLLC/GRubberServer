@@ -142,9 +142,9 @@ const PostsControllet = {
     const {id} = req.params; 
     const {media, media_type, user_id, caption, place_id} = req.body; 
     const query = `
-    UPDATE Posts
-    SET media = $1, media_type = $2, user_id = $3, caption = $4, place_id = $5
-    WHERE post_id = $6
+      UPDATE Posts
+      SET media = $1, media_type = $2, user_id = $3, caption = $4, place_id = $5
+      WHERE post_id = $6
     `
     try {
       const result = await pool.query(query, [media, media_type, user_id, caption, place_id, id]);

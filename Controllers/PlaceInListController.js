@@ -65,17 +65,18 @@ const PlaceInListController = {
         return res.status(201).send(`PlaceInList successfully updated - ID: ${id}`)
     });
   },
-  deletePlaceInListById: (req, res) => {
+  deletePlaceInListById: async (req, res) => {
     const {id} = req.params; 
     const query = `
-    DELETE FROM PlaceInList WHERE pl_id = ?
+      DELETE FROM PlaceInList WHERE place_list_id = ?
     `
-    connection.query(query, [id], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(`PlaceInList successfully delete`)
-    });
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
 }
 
