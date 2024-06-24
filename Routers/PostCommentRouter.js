@@ -6,7 +6,7 @@ PostCommentRouter.route('')
   .post(PostCommentController.createPostCOmment)
 
 CommentRouter.route('/user/:id')
-  .get(CommentController.getCommentByUserId)
+  .get(PostCommentController.getCommentByUserId)
 
 PostCommentRouter.route('/:id')
   .get(PostCommentController.getCommentByPostId)
