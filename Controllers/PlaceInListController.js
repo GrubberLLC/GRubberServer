@@ -68,7 +68,7 @@ const PlaceInListController = {
   deletePlaceInListById: async (req, res) => {
     const {id} = req.params; 
     const query = `
-      DELETE FROM PlaceInList WHERE place_list_id = ?
+      DELETE FROM PlaceInList WHERE place_list_id = $1
     `
     try {
       const result = await pool.query(query, [id]);
