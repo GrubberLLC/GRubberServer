@@ -58,7 +58,6 @@ const PostCommentController = {
       WHERE c.user_id = $1
       ORDER BY c.post_id, c.created_at DESC;
     `;
-    console.log(query);
     try {
       const result = await pool.query(query, [id]);
       res.status(201).json(result.rows);
