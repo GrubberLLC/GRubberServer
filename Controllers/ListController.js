@@ -28,21 +28,6 @@ const ListController = {
         return res.status(201).send(results)
     });
   },
-  // updateListById: (req, res) => {
-  //   const {id} = req.params; 
-  //   const {name, description, picture, last_activity, public} = req.body
-  //   const query = `
-  //   UPDATE Lists
-  //   SET name = ?, description = ?, picture = ?, last_activity = ?, public = ?
-  //   WHERE list_id = ?
-  //   `
-  //   connection.query(query, [name, description, picture, last_activity, public, id], (err, results) => {
-  //       if(err){
-  //         return res.status(500).send(err.message);
-  //       } 
-  //       return res.status(201).send(`List successfully updated - ID: ${name} / ${id}`)
-  //   });
-  // },
   deleteListById: (req, res) => {
     const {id} = req.params; 
     const query = `

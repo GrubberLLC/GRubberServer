@@ -13,7 +13,4 @@ ListRouter.route('/:id')
 ListRouter.route('/user/:id')
   .get(ListController.getListByUserId)
 
-ListRouter.route('/public/:id')
-  .put(ListController.updateListPublic)
-
 module.exports = ListRouter;
