@@ -67,8 +67,8 @@ const ListController = {
     `
     try {
       const result = await pool.query(query, [name, description, picture, public, id]);
-      console.log(result.rows)
-      res.status(201).json(result.rows);
+      console.log(result.rows[0])
+      res.status(201).json(result.rows[0]);
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
