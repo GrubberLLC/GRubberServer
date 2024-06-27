@@ -77,7 +77,7 @@ const ListController = {
       console.error(err);
       res.status(500).send(err.message);
     }
-  };
+  }
 }
 
 module.exports = {ListController}
