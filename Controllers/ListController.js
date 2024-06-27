@@ -72,20 +72,22 @@ const ListController = {
       res.status(500).send(err.message);
     }
   },
-  updateListPublic: (req, res) => {
+  updateListPublic: async (req, res) => {
     const {id} = req.params; 
-    const {public} = req.body
+    const {name, description, picture, public} = req.body
     const query = `
     UPDATE Lists
-    SET public = ?
-    WHERE list_id = ?
+    SET name = $1, description = $2, picture = $3, public = $4
+    WHERE list_id = $5
     `
-    connection.query(query, [public, id], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(`List Visibilty was successfully updated - ID: ${id}`)
-    });
+    try {
+      const result = await pool.query(query, [name, description, picture, public, id]);
+      console.log(result.rows)
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
 }
 
