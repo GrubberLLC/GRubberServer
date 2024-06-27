@@ -58,22 +58,26 @@ const ListController = {
     }
   },
   updateListById: async (req, res) => {
-    const {id} = req.params; 
-    const {name, description, picture, public} = req.body
+    const { id } = req.params; 
+    const { name, description, picture, public } = req.body;
     const query = `
-    UPDATE Lists
-    SET name = $1, description = $2, picture = $3, public = $4
-    WHERE list_id = $5
-    `
+      UPDATE Lists
+      SET name = $1, description = $2, picture = $3, public = $4
+      WHERE list_id = $5
+      RETURNING *;
+    `;
     try {
       const result = await pool.query(query, [name, description, picture, public, id]);
-      console.log(result.rows[0])
-      res.status(201).json(result.rows[0]);
+      if (result.rows.length > 0) {
+        res.status(200).json(result.rows[0]);
+      } else {
+        res.status(404).json({ message: 'List not found' });
+      }
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
     }
-  },
+  };
 }
 
 module.exports = {ListController}
