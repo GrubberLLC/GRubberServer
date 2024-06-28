@@ -8,6 +8,8 @@ ProfileRouter.route('')
 
 ProfileRouter.route('/:id')
   .get(ProfileController.grabProfile)
+  .put(ProfileController.updateUserProfile)
+  .delete(ProfileController.deleteUserProfile)
 
 ProfileRouter.route('/search/:term')
   .get(ProfileController.searchProfiles)
