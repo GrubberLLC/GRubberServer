@@ -55,6 +55,39 @@ const ProfileController = {
       console.error(err);
       res.status(500).send(err.message);
     }
+  },
+  updateUserProfile: async (req, res) => {
+    const { id } = req.params
+    const { username, email, phone, location, first_name, 
+      last_name, name, bio, nickname, profile_picture, public, notifications } = req.body;
+    const query = `
+      UPDATE Profiles
+      SET username = $1, email = $2, phone = $3, location = $4, first_name = $5, 
+          last_name = $6, name = $7, bio = $8, nickname = $9, profile_picture = $10, 
+          public = $11, notifications = $12
+      WHERE profile_id = $13
+      RETURNING *;
+    `;
+    try {
+      const result = await pool.query(query, [username, email, phone, location, first_name, 
+        last_name, name, bio, nickname, profile_picture, public, notifications, id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
+  },
+  deleteUserProfile: async (req, res) => {
+    const { id } = req.params
+    const query = `
+      DELETE * FROM Profiles WHERE profile_id = $1`;
+    try {
+      const result = await pool.query(query, [id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   }
 };
 
