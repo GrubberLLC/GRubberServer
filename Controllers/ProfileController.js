@@ -65,7 +65,7 @@ const ProfileController = {
       SET username = $1, email = $2, phone = $3, location = $4, first_name = $5, 
           last_name = $6, name = $7, bio = $8, nickname = $9, profile_picture = $10, 
           public = $11, notifications = $12
-      WHERE profile_id = $13
+      WHERE user_id = $13
       RETURNING *;
     `;
     try {
