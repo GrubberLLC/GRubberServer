@@ -59,18 +59,18 @@ const ProfileController = {
   updateUserProfile: async (req, res) => {
     const { id } = req.params
     const { username, email, phone, location, first_name, 
-      last_name, name, bio, nickname, profile_picture, public, notifications } = req.body;
+      last_name, full_name, bio, nickname, profile_picture, public, notifications } = req.body;
     const query = `
       UPDATE Profiles
       SET username = $1, email = $2, phone = $3, location = $4, first_name = $5, 
-          last_name = $6, name = $7, bio = $8, nickname = $9, profile_picture = $10, 
+          last_name = $6, full_name = $7, bio = $8, nickname = $9, profile_picture = $10, 
           public = $11, notifications = $12
       WHERE user_id = $13
       RETURNING *;
     `;
     try {
       const result = await pool.query(query, [username, email, phone, location, first_name, 
-        last_name, name, bio, nickname, profile_picture, public, notifications, id]);
+        last_name, full_name, bio, nickname, profile_picture, public, notifications, id]);
       res.status(201).json(result.rows);
     } catch (err) {
       console.error(err);
