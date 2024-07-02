@@ -1,18 +1,19 @@
-const connection = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
+const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
 
 const ActivityController = {
-  createActivity: (req, res) => {
-    const {user_id, activity, type, favorites_id, list_id, following_id, comment_id, picture} = req.body; 
+  createActivity: async (req, res) => {
+    const {user_id, message, post_id, list_id, place_id, friend_id, comment_id} = req.body; 
     const query = `
       INSERT INTO Activity 
-        (user_id, activity, type, favorites_id, list_id, following_id, comment_id, picture, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?,  NOW())`
-    connection.query(query, [user_id, activity, type, favorites_id, list_id, following_id, comment_id, picture], (err, results) => {
-        if(err){
-          return res.status(500).send(err.message);
-        } 
-        return res.status(201).send(`Activity created with ID: ${results.insertId}`)
-    });
+        (user_id, message, post_id, list_id, place_id, friend_id, comment_id, created_at)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())`
+    try {
+      const result = await pool.query(query, [user_id, message, post_id, list_id, place_id, friend_id, comment_id]);
+      res.status(201).json(result.rows[0]);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
   },
   getActivityById: (req, res) => {
     const {id} = req.params; 
