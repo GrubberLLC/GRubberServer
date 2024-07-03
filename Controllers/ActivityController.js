@@ -28,13 +28,13 @@ const ActivityController = {
         p.media AS post_media,
         l.list_id AS list_id,
         l.created_at AS list_created_at,
-        l.media AS list_media,
+        l.picture AS list_picture,
         pl.place_id AS place_id,
         pl.created_at AS place_created_at,
-        pl.media AS place_media,
+        pl.image AS place_image,
         pr.user_id AS profile_user_id,
         pr.created_at AS profile_created_at,
-        pr.media AS profile_media
+        pr.profile_picture AS profile_profile_picture
       FROM 
         Activity a
       LEFT JOIN 
