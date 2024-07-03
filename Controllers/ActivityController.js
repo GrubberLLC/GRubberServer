@@ -20,13 +20,21 @@ const ActivityController = {
     const query = `
       SELECT 
         a.activity_id, 
-        a.user_id, 
-        a.message, 
-        a.created_at,
-        p.* AS post,
-        l.* AS list,
-        pl.* AS place,
-        pr.* AS profile
+        a.user_id AS activity_user_id, 
+        a.message AS activity_message, 
+        a.created_at AS activity_created_at,
+        p.post_id AS post_id,
+        p.created_at AS post_created_at,
+        p.media AS post_media,
+        l.list_id AS list_id,
+        l.created_at AS list_created_at,
+        l.media AS list_media,
+        pl.place_id AS place_id,
+        pl.created_at AS place_created_at,
+        pl.media AS place_media,
+        pr.user_id AS profile_user_id,
+        pr.created_at AS profile_created_at,
+        pr.media AS profile_media
       FROM 
         Activity a
       LEFT JOIN 
