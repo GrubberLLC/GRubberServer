@@ -36,7 +36,7 @@ const ActivityController = {
       LEFT JOIN 
         Places pl ON a.place_id = pl.place_id
       LEFT JOIN 
-        Friends f ON a.friend_id = f.friend_id
+        Friends f ON a.friend_id = f.friends_id
       WHERE 
         a.user_id = $1
       ORDER BY 
