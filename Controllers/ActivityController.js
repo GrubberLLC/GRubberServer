@@ -30,13 +30,13 @@ const ActivityController = {
       FROM 
         Activity a
       LEFT JOIN 
-        Post p ON a.post_id = p.post_id
+        Posts p ON a.post_id = p.post_id
       LEFT JOIN 
-        List l ON a.list_id = l.list_id
+        Lists l ON a.list_id = l.list_id
       LEFT JOIN 
-        Place pl ON a.place_id = pl.place_id
+        Places pl ON a.place_id = pl.place_id
       LEFT JOIN 
-        Friend f ON a.friend_id = f.friend_id
+        Friends f ON a.friend_id = f.friend_id
       WHERE 
         a.user_id = $1
       ORDER BY 
