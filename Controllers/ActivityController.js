@@ -26,7 +26,7 @@ const ActivityController = {
         p.* AS post,
         l.* AS list,
         pl.* AS place,
-        f.* AS friend
+        pr.* AS profile
       FROM 
         Activity a
       LEFT JOIN 
@@ -36,7 +36,7 @@ const ActivityController = {
       LEFT JOIN 
         Places pl ON a.place_id = pl.place_id
       LEFT JOIN 
-        Friends f ON a.friend_id = f.friends_id
+        Profiles pr ON a.friend_id = pr.user_id
       WHERE 
         a.user_id = $1
       ORDER BY 
