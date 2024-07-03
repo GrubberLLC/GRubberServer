@@ -17,9 +17,31 @@ const ActivityController = {
   },
   getActivityById: async (req, res) => {
     const {id} = req.params; 
-    const query = ` 
-      SELECT * FROM Activity WHERE user_id = $1 ORDER BY created_at DESC
-    `
+    const query = `
+      SELECT 
+        a.activity_id, 
+        a.user_id, 
+        a.message, 
+        a.created_at,
+        p.* AS post,
+        l.* AS list,
+        pl.* AS place,
+        f.* AS friend
+      FROM 
+        Activity a
+      LEFT JOIN 
+        Post p ON a.post_id = p.post_id
+      LEFT JOIN 
+        List l ON a.list_id = l.list_id
+      LEFT JOIN 
+        Place pl ON a.place_id = pl.place_id
+      LEFT JOIN 
+        Friend f ON a.friend_id = f.friend_id
+      WHERE 
+        a.user_id = $1
+      ORDER BY 
+        a.created_at DESC;
+    `;
     try {
       const result = await pool.query(query, [id]);
       res.status(201).json(result.rows);
