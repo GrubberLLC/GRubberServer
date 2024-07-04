@@ -22,10 +22,9 @@ const ActivityController = {
         a.* AS activity,
         a.activity_id, 
         a.user_id AS activity_user_id, 
-        a.message AS activity_message, 
         a.created_at AS activity_created_at,
         p.* AS post,
-        p.post_id AS post_id,
+        p.post_id AS post_post_id,
         p.created_at AS post_created_at,
         p.media AS post_media,
         l.* AS list,
@@ -49,7 +48,7 @@ const ActivityController = {
       LEFT JOIN 
         Places pl ON a.place_id = pl.place_id
       LEFT JOIN 
-        Profiles pr ON a.friend_id = pr.user_id
+        Profiles pr ON a.user_id = pr.user_id
       WHERE 
         a.user_id = $1
       ORDER BY 
