@@ -19,22 +19,27 @@ const ActivityController = {
     const {id} = req.params; 
     const query = `
       SELECT 
+        a.* AS activity,
         a.activity_id, 
         a.user_id AS activity_user_id, 
         a.message AS activity_message, 
         a.created_at AS activity_created_at,
+        p.* AS post,
         p.post_id AS post_id,
         p.created_at AS post_created_at,
         p.media AS post_media,
+        l.* AS list,
         l.list_id AS list_id,
         l.created_at AS list_created_at,
         l.picture AS list_picture,
+        pl.* AS place,
         pl.place_id AS place_id,
         pl.created_at AS place_created_at,
         pl.image AS place_image,
+        pr.* AS profile,
         pr.user_id AS profile_user_id,
         pr.created_at AS profile_created_at,
-        pr.profile_picture AS profile_profile_picture
+        pr.profile_picture AS profile_picture
       FROM 
         Activity a
       LEFT JOIN 
