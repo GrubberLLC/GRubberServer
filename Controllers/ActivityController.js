@@ -48,7 +48,7 @@ const ActivityController = {
       LEFT JOIN 
         Places pl ON a.place_id = pl.place_id
       LEFT JOIN 
-        Profiles pr ON a.user_id = pr.user_id
+        Profiles pr ON $1 = pr.user_id
       WHERE 
         a.user_id = $1
       ORDER BY 
