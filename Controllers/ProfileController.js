@@ -82,7 +82,7 @@ const ProfileController = {
     const { token } = req.body;
     const query = `
       UPDATE Profiles
-      SET fcmToken = $1,
+      SET fcmtoken = $1,
       WHERE user_id = $2
       RETURNING *;
     `;
