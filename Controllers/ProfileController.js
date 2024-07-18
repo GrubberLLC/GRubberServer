@@ -80,9 +80,10 @@ const ProfileController = {
   updateUserFCMToken: async (req, res) => {
     const { id } = req.params
     const { token } = req.body;
+    console.log(token)
     const query = `
       UPDATE Profiles
-      SET fcmtoken = $1,
+      SET fcmtoken = $1
       WHERE user_id = $2
       RETURNING *;
     `;
