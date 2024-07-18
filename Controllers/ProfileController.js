@@ -1,4 +1,6 @@
 const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
+const admin = require('../firebaseAdmin');
+
 
 const ProfileController = {
   createProfile: async (req, res) => {
@@ -106,7 +108,40 @@ const ProfileController = {
       console.error(err);
       res.status(500).send(err.message);
     }
-  }
+  },
+  sendNotification: async (req, res) => {
+    const { userId, title, body, imageUrl } = req.body;
+
+    try {
+      // Fetch the FCM token from the database
+      const tokenQuery = `SELECT fcmtoken FROM Profiles WHERE user_id = $1`;
+      const tokenResult = await pool.query(tokenQuery, [userId]);
+      const fcmToken = tokenResult.rows[0]?.fcmtoken;
+
+      if (!fcmToken) {
+        return res.status(404).json({ error: 'FCM token not found for user' });
+      }
+
+      // Create the message payload
+      const message = {
+        notification: {
+          title: title,
+          body: body,
+          imageUrl: imageUrl,
+        },
+        token: fcmToken,
+      };
+
+      // Send the notification
+      const response = await admin.messaging().send(message);
+      console.log('Successfully sent message:', response);
+
+      res.status(200).json({ message: 'Notification sent successfully' });
+    } catch (err) {
+      console.error('Error sending notification:', err);
+      res.status(500).send(err.message);
+    }
+  },
 };
 
 module.exports = { ProfileController };
