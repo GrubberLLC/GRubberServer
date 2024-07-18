@@ -110,26 +110,16 @@ const ProfileController = {
     }
   },
   sendNotification: async (req, res) => {
-    const { userId, title, body, imageUrl } = req.body;
+    const { fcmtoken, title, body, imageUrl } = req.body;
 
     try {
-      // Fetch the FCM token from the database
-      const tokenQuery = `SELECT fcmtoken FROM Profiles WHERE user_id = $1`;
-      const tokenResult = await pool.query(tokenQuery, [userId]);
-      const fcmToken = tokenResult.rows[0]?.fcmtoken;
-
-      if (!fcmToken) {
-        return res.status(404).json({ error: 'FCM token not found for user' });
-      }
-
-      // Create the message payload
       const message = {
         notification: {
           title: title,
           body: body,
           imageUrl: imageUrl,
         },
-        token: fcmToken,
+        token: fcmtoken,
       };
 
       // Send the notification
