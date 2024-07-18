@@ -77,6 +77,23 @@ const ProfileController = {
       res.status(500).send(err.message);
     }
   },
+  updateUserFCMToken: async (req, res) => {
+    const { id } = req.params
+    const { token } = req.body;
+    const query = `
+      UPDATE Profiles
+      SET fcmToken = $1,
+      WHERE user_id = $2
+      RETURNING *;
+    `;
+    try {
+      const result = await pool.query(query, [token, id]);
+      res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
+  },
   deleteUserProfile: async (req, res) => {
     const { id } = req.params
     const query = `

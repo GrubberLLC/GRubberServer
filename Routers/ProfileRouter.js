@@ -14,4 +14,7 @@ ProfileRouter.route('/:id')
 ProfileRouter.route('/search/:term')
   .get(ProfileController.searchProfiles)
 
+ProfileRouter.route('/fcm-token/:id')
+  .put(ProfileController.updateUserFCMToken)
+
 module.exports = ProfileRouter;

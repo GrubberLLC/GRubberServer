@@ -17,6 +17,7 @@ const FavoriteRouter = require('../../Routers/FavoriteRouter');
 const PostRouter = require('../../Routers/PostRouter');
 const LikesRouter = require('../../Routers/LikesRouter');
 const PostCommentRouter = require('../../Routers/PostCommentRouter');
+const { ShareController } = require('../../Controllers/ShareController');
 
 const app = express();
 
@@ -38,5 +39,6 @@ app.use('/api/v1/notifications/', FavoriteRouter)
 app.use('/api/v1/posts/', PostRouter)
 app.use('/api/v1/likes/', LikesRouter)
 app.use('/api/v1/postComments/', PostCommentRouter)
+app.use('/api/v1/share/', ShareController)
 
 module.exports = app;
