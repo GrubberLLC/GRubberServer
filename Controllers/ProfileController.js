@@ -1,5 +1,5 @@
 const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
-const admin = require('../firebaseAdmin');
+const admin = require('../bin/utils/firebaseAdmin');
 
 
 const ProfileController = {
