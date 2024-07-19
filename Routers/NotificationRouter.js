@@ -3,6 +3,6 @@ const { NotificationController } = require('../Controllers/NotificationControlle
 const NotificationRouter = express.Router();
 
 NotificationRouter.route('')
-  .post(NotificationController.createAddPlaceToListNotification)
+  .post(NotificationController.sendNotification)
 
 module.exports = NotificationRouter;

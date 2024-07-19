@@ -19,6 +19,7 @@ const LikesRouter = require('../../Routers/LikesRouter');
 const PostCommentRouter = require('../../Routers/PostCommentRouter');
 const { ShareController } = require('../../Controllers/ShareController');
 const ShareRouter = require('../../Routers/ShareRouter');
+const NotificationRouter = require('../../Routers/NotificationRouter');
 
 const app = express();
 
@@ -36,10 +37,10 @@ app.use('/api/v1/members/', MemberRouter)
 app.use('/api/v1/friends/', FriendRouter)
 app.use('/api/v1/placeinlist/', PlaceInListRouter)
 app.use('/api/v1/favorites/', FavoriteRouter)
-app.use('/api/v1/notifications/', FavoriteRouter)
 app.use('/api/v1/posts/', PostRouter)
 app.use('/api/v1/likes/', LikesRouter)
 app.use('/api/v1/postComments/', PostCommentRouter)
 app.use('/api/v1/share/', ShareRouter)
+app.use('/api/v1/notifications/', NotificationRouter)
 
 module.exports = app;

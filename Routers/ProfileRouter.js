@@ -17,7 +17,4 @@ ProfileRouter.route('/search/:term')
 ProfileRouter.route('/fcm-token/:id')
   .put(ProfileController.updateUserFCMToken)
 
-ProfileRouter.route('/notification/:id')
-  .post(ProfileController.sendNotification)
-
 module.exports = ProfileRouter;
