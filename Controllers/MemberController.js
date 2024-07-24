@@ -78,14 +78,13 @@ const MemberController = {
     const { id } = req.params; 
     const query = `
       UPDATE Members
-        SET status = 'active'
-        WHERE member_id = $1
+      SET status = 'active'
+      WHERE member_id = $1
+      RETURNING *;
     `;
     try {
       const result = await pool.query(query, [id]);
-      if (result.rows.length > 0) {
-        res.status(200).json(result.rows);
-      }
+      res.status(200).json(result.rows); // Always return a response
     } catch (err) {
       console.error('Database error:', err);
       res.status(500).send(err.message);
