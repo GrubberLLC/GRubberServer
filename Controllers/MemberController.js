@@ -117,7 +117,7 @@ const MemberController = {
     try {
       const result = await pool.query(query, [id]);
       if (result.rows.length > 0) {
-        console.log(results.rows)
+        console.log(result.rows)
         res.status(200).json(result.rows);
       }
     } catch (err) {
