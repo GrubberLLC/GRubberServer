@@ -100,7 +100,7 @@ const ProfileController = {
   deleteUserProfile: async (req, res) => {
     const { id } = req.params
     const query = `
-      DELETE * FROM Profiles WHERE profile_id = $1`;
+      DELETE * FROM Profiles WHERE user_id = $1`;
     try {
       const result = await pool.query(query, [id]);
       res.status(201).json(result.rows);
