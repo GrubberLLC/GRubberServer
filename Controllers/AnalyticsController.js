@@ -4,12 +4,41 @@ const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessa
 const AnalyticsController = {
   getUserCount: async (req, res) => {
     const { startDate, endDate } = req.query;
-    let query = 'SELECT COUNT(*) FROM profiles WHERE created_at >= $1 AND created_at <= $2';
-    let params = [startDate, endDate];
+    
+    const totalQuery = `
+      SELECT COUNT(*) as total
+      FROM profiles 
+      WHERE created_at >= $1 AND created_at <= $2
+    `;
+  
+    const dailyQuery = `
+      SELECT 
+        DATE(created_at) as date,
+        COUNT(*) as new_signups
+      FROM 
+        profiles
+      WHERE 
+        created_at >= $1 AND created_at <= $2
+      GROUP BY 
+        DATE(created_at)
+      ORDER BY 
+        date ASC
+    `;
   
     try {
-      const result = await pool.query(query, params);
-      res.status(200).json({ count: parseInt(result.rows[0].count) });
+      const totalResult = await pool.query(totalQuery, [startDate, endDate]);
+      const dailyResult = await pool.query(dailyQuery, [startDate, endDate]);
+  
+      const totalSignups = parseInt(totalResult.rows[0].total);
+      const dailySignups = dailyResult.rows.map(row => ({
+        date: row.date.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+        new_signups: parseInt(row.new_signups)
+      }));
+  
+      res.status(200).json({
+        totalSignups,
+        dailySignups
+      });
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
