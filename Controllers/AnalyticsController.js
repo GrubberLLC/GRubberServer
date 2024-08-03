@@ -49,12 +49,41 @@ const AnalyticsController = {
   },
   getPostCount: async (req, res) => {
     const { startDate, endDate } = req.query;
-    let query = 'SELECT COUNT(*) FROM posts WHERE created_at >= $1 AND created_at <= $2';
-    let params = [startDate, endDate];
+    
+    const totalQuery = `
+      SELECT COUNT(*) as total
+      FROM posts 
+      WHERE created_at >= $1 AND created_at <= $2
+    `;
+  
+    const dailyQuery = `
+      SELECT 
+        DATE(created_at) as date,
+        COUNT(*) as new_posts
+      FROM 
+        posts
+      WHERE 
+        created_at >= $1 AND created_at <= $2
+      GROUP BY 
+        DATE(created_at)
+      ORDER BY 
+        date ASC
+    `;
   
     try {
-      const result = await pool.query(query, params);
-      res.status(200).json({ count: parseInt(result.rows[0].count) });
+      const totalResult = await pool.query(totalQuery, [startDate, endDate]);
+      const dailyResult = await pool.query(dailyQuery, [startDate, endDate]);
+  
+      const totalPosts = parseInt(totalResult.rows[0].total);
+      const dailyPosts = dailyResult.rows.map(row => ({
+        date: row.date.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+        new_posts: parseInt(row.new_posts)
+      }));
+  
+      res.status(200).json({
+        totalPosts,
+        dailyPosts
+      });
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
@@ -62,12 +91,41 @@ const AnalyticsController = {
   },
   getLikeCount: async (req, res) => {
     const { startDate, endDate } = req.query;
-    let query = 'SELECT COUNT(*) FROM likes WHERE created_at >= $1 AND created_at <= $2';
-    let params = [startDate, endDate];
-
+    
+    const totalQuery = `
+      SELECT COUNT(*) as total
+      FROM likes 
+      WHERE created_at >= $1 AND created_at <= $2
+    `;
+  
+    const dailyQuery = `
+      SELECT 
+        DATE(created_at) as date,
+        COUNT(*) as new_likes
+      FROM 
+        likes
+      WHERE 
+        created_at >= $1 AND created_at <= $2
+      GROUP BY 
+        DATE(created_at)
+      ORDER BY 
+        date ASC
+    `;
+  
     try {
-      const result = await pool.query(query, params);
-      res.status(200).json({ count: parseInt(result.rows[0].count) });
+      const totalResult = await pool.query(totalQuery, [startDate, endDate]);
+      const dailyResult = await pool.query(dailyQuery, [startDate, endDate]);
+  
+      const totalLikes = parseInt(totalResult.rows[0].total);
+      const dailyLikes = dailyResult.rows.map(row => ({
+        date: row.date.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+        new_likes: parseInt(row.new_likes)
+      }));
+  
+      res.status(200).json({
+        totalLikes,
+        dailyLikes
+      });
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
@@ -75,12 +133,41 @@ const AnalyticsController = {
   },
   getCommentCount: async (req, res) => {
     const { startDate, endDate } = req.query;
-    let query = 'SELECT COUNT(*) FROM comments WHERE created_at >= $1 AND created_at <= $2';
-    let params = [startDate, endDate];
-
+    
+    const totalQuery = `
+      SELECT COUNT(*) as total
+      FROM comments 
+      WHERE created_at >= $1 AND created_at <= $2
+    `;
+  
+    const dailyQuery = `
+      SELECT 
+        DATE(created_at) as date,
+        COUNT(*) as new_comments
+      FROM 
+        comments
+      WHERE 
+        created_at >= $1 AND created_at <= $2
+      GROUP BY 
+        DATE(created_at)
+      ORDER BY 
+        date ASC
+    `;
+  
     try {
-      const result = await pool.query(query, params);
-      res.status(200).json({ count: parseInt(result.rows[0].count) });
+      const totalResult = await pool.query(totalQuery, [startDate, endDate]);
+      const dailyResult = await pool.query(dailyQuery, [startDate, endDate]);
+  
+      const totalComments = parseInt(totalResult.rows[0].total);
+      const dailyComments = dailyResult.rows.map(row => ({
+        date: row.date.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+        new_comments: parseInt(row.new_comments)
+      }));
+  
+      res.status(200).json({
+        totalComments,
+        dailyComments
+      });
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
@@ -88,12 +175,41 @@ const AnalyticsController = {
   },
   getListCount: async (req, res) => {
     const { startDate, endDate } = req.query;
-    let query = 'SELECT COUNT(*) FROM lists WHERE created_at >= $1 AND created_at <= $2';
-    let params = [startDate, endDate];
-
+    
+    const totalQuery = `
+      SELECT COUNT(*) as total
+      FROM lists 
+      WHERE created_at >= $1 AND created_at <= $2
+    `;
+  
+    const dailyQuery = `
+      SELECT 
+        DATE(created_at) as date,
+        COUNT(*) as new_lists
+      FROM 
+        lists
+      WHERE 
+        created_at >= $1 AND created_at <= $2
+      GROUP BY 
+        DATE(created_at)
+      ORDER BY 
+        date ASC
+    `;
+  
     try {
-      const result = await pool.query(query, params);
-      res.status(200).json({ count: parseInt(result.rows[0].count) });
+      const totalResult = await pool.query(totalQuery, [startDate, endDate]);
+      const dailyResult = await pool.query(dailyQuery, [startDate, endDate]);
+  
+      const totalLists = parseInt(totalResult.rows[0].total);
+      const dailyLists = dailyResult.rows.map(row => ({
+        date: row.date.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+        new_lists: parseInt(row.new_lists)
+      }));
+  
+      res.status(200).json({
+        totalLists,
+        dailyLists
+      });
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
