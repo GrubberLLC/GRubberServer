@@ -14,6 +14,6 @@ ListRouter.route('/user/:id')
   .get(ListController.getListByUserId)
 
 ListRouter.route('/user/public/:id')
-  .get(ListController.getListByUserId)
+  .get(ListController.getPublicListByUserId)
 
 module.exports = ListRouter;
