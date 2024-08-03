@@ -4,6 +4,9 @@ const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessa
 const AnalyticsController = {
   getUserCount: async (req, res) => {
     const { startDate, endDate } = req.query;
+
+    console.log('start date: ', startDate)
+    console.log('end date: ', endDate)
     
     const totalQuery = `
       SELECT COUNT(*) as total
