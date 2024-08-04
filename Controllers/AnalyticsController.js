@@ -227,7 +227,7 @@ const AnalyticsController = {
       LEFT JOIN comments c ON p.post_id = c.post_id
       GROUP BY pr.user_id, pr.username
       ORDER BY total_interactions DESC
-      LIMIT 250
+      LIMIT 50
     `;
   
     try {
