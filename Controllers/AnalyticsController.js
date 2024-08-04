@@ -217,7 +217,7 @@ const AnalyticsController = {
   },
   getTopUsers: async (req, res) => {
     const query = `
-      SELECT pr.user_id, pr.username, 
+      SELECT pr.user_id, pr.username, pr.profile_picture
              COUNT(DISTINCT l.like_id) as like_count, 
              COUNT(DISTINCT c.comment_id) as comment_count,
              COUNT(DISTINCT l.like_id) + COUNT(DISTINCT c.comment_id) as total_interactions
