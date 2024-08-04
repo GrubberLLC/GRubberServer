@@ -217,7 +217,7 @@ const AnalyticsController = {
   },
   getTopUsers: async (req, res) => {
     const query = `
-      SELECT pr.user_id, pr.username, pr.profile_picture
+      SELECT pr.user_id, pr.username, pr.profile_picture,
              COUNT(DISTINCT l.like_id) as like_count, 
              COUNT(DISTINCT c.comment_id) as comment_count,
              COUNT(DISTINCT l.like_id) + COUNT(DISTINCT c.comment_id) as total_interactions
@@ -225,7 +225,7 @@ const AnalyticsController = {
       LEFT JOIN posts p ON pr.user_id = p.user_id
       LEFT JOIN likes l ON p.post_id = l.post_id
       LEFT JOIN comments c ON p.post_id = c.post_id
-      GROUP BY pr.user_id, pr.username
+      GROUP BY pr.user_id, pr.username, pr.profile_picture
       ORDER BY total_interactions DESC
       LIMIT 50
     `;
