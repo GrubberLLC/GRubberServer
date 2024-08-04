@@ -23,4 +23,7 @@ AnalyticsRouter.route('/getTopUsers')
 AnalyticsRouter.route('/newSignups')
   .get(AnalyticsController.getNewUserSignups)
 
+AnalyticsRouter.route('/totals')
+  .get(AnalyticsController.getActivitySummary)
+
 module.exports = AnalyticsRouter;
