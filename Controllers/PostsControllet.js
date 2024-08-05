@@ -2,14 +2,14 @@ const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessa
 
 const PostsControllet = {
   createPost: async (req, res) => {
-    const { media, media_type, user_id, caption, place_id } = req.body; 
+    const { media, media_type, user_id, caption, place_id, yelp_id } = req.body; 
     const query = `
       INSERT INTO Posts
-      (media, media_type, user_id, caption, place_id, created_at)
-      VALUES ($1, $2, $3, $4, $5, NOW())
+      (media, media_type, user_id, caption, place_id, yelp_id, created_at)
+      VALUES ($1, $2, $3, $4, $5, $6, NOW())
       RETURNING *;`;
     try {
-      const result = await pool.query(query, [media, media_type, user_id, caption, place_id]);
+      const result = await pool.query(query, [media, media_type, user_id, caption, place_id, yelp_id]);
       res.status(201).json(result.rows[0]);
     } catch (err) {
       console.error(err);
