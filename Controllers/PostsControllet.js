@@ -70,22 +70,22 @@ const PostsControllet = {
     });
   },
   getPostByUserId: async (req, res) => {
-    const {id} = req.params; 
+    const { id } = req.params;
     const query = `
       SELECT Posts.*, Places.*, Profiles.*
       FROM Posts
-      JOIN Places ON Posts.place_id = Places.place_id
+      LEFT JOIN Places ON Posts.place_id = Places.place_id
       JOIN Profiles ON Posts.user_id = Profiles.user_id
       WHERE Posts.user_id = $1
     `;
     try {
       const result = await pool.query(query, [id]);
-      res.status(201).json(result.rows);
+      res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
     }
-  },
+  },  
   getPostByPlaceId: async (req, res) => {
     const {id} = req.params; 
     const query = `
