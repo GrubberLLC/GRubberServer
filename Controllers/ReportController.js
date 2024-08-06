@@ -47,7 +47,7 @@ const ReportController = {
       res.status(500).send(err.message);
     }
   },
-  createReportPosts = async (req, res) => {
+  createReportPost: async (req, res) => {
     const { reporter_id, reporter_email, reported_id, subject, message, category } = req.body;
     const query = `
       INSERT INTO Reports
