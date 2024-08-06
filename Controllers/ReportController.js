@@ -1,5 +1,6 @@
 const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.example.com', // Replace with your SMTP server
@@ -46,40 +47,42 @@ const ReportController = {
       res.status(500).send(err.message);
     }
   },
-  createReportPosts: async (req, res) => {
-    const { reporter_id, reporter_email, reported_id, subject, message, category } = req.body; 
+  createReportPosts = async (req, res) => {
+    const { reporter_id, reporter_email, reported_id, subject, message, category } = req.body;
     const query = `
       INSERT INTO Reports
       (reporter_id, reported_id, subject, message, category, created_at)
-      VALUES ($1, $2, $3, $4, $5,  NOW())
+      VALUES ($1, $2, $3, $4, $5, NOW())
       RETURNING *;`;
+  
     try {
       const result = await pool.query(query, [reporter_id, reported_id, subject, message, category]);
-
+  
       const mailOptions = {
-        from: 'contact@grubber.io', // sender address
+        from: 'contact@gmail.com', // sender address
         to: 'report@grubber.io', // list of receivers
-        cc: reporter_email, // optional CC
         subject: subject,
         text: message, // plain text body
-        html: `<p>${message.replace(/\n/g, '<br>')}</p>` // HTML body
+        html: `<p>${message.replace(/\n/g, '<br>')}</p>`, // HTML body
       };
-
+  
       // Send email
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           console.error('Error sending email:', error);
-          return res.status(500).send('Error sending email');
+          // Send response with email error information
+          return res.status(500).json({ error: 'Error sending email', detail: error.message });
         }
         console.log('Email sent:', info.response);
+        // Send success response only after the email is sent
+        return res.status(201).json(result.rows);
       });
-
-      res.status(201).json(result.rows);
+  
     } catch (err) {
       console.error(err);
-      res.status(500).send(err.message);
+      return res.status(500).send(err.message);
     }
-  },
+  };
   getReports: async (req, res) => {
     const query = `
       SELECT *  
