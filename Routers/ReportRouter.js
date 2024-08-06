@@ -6,7 +6,7 @@ ReportRouter.route('')
   .post(ReportController.createReport)
 
 ReportRouter.route('/post')
-  .post(ReportController.createReportPosts)
+  .post(ReportController.createReportPost)
 
 ReportRouter.route('')
   .get(ReportController.getReports)
