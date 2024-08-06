@@ -82,7 +82,7 @@ const ReportController = {
       console.error(err);
       return res.status(500).send(err.message);
     }
-  };
+  },
   getReports: async (req, res) => {
     const query = `
       SELECT *  
