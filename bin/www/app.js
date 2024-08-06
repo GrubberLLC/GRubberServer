@@ -21,6 +21,7 @@ const { ShareController } = require('../../Controllers/ShareController');
 const ShareRouter = require('../../Routers/ShareRouter');
 const NotificationRouter = require('../../Routers/NotificationRouter');
 const AnalyticsRouter = require('../../Routers/AnalyticsRouter');
+const ReportRouter = require('../../Routers/ReportRouter');
 
 const app = express();
 
@@ -44,5 +45,6 @@ app.use('/api/v1/postComments/', PostCommentRouter)
 app.use('/api/v1/share/', ShareRouter)
 app.use('/api/v1/notifications/', NotificationRouter)
 app.use('/api/v1/analytics/', AnalyticsRouter)
+app.use('/api/v1/reports/', ReportRouter)
 
 module.exports = app;
