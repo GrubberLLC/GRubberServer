@@ -71,7 +71,7 @@ const ReportController = {
         if (error) {
           console.error('Error sending email:', error);
           // Send response with email error information
-          return res.status(500).json({ error: 'Error sending email', detail: error.message });
+          return res.status(200).json({ error: 'Error sending email', detail: error.message });
         }
         console.log('Email sent:', info.response);
         // Send success response only after the email is sent
