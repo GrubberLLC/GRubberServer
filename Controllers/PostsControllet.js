@@ -123,6 +123,15 @@ const PostsControllet = {
   },
   getPostByFriendId: async (req, res) => {
     const { id } = req.params;
+    const { page } = req.query;
+
+    // Set the number of records per page
+    const recordsPerPage = 100;
+    const currentPage = page ? parseInt(page, 10) : 1; // Default to page 1 if no page is specified
+
+    // Calculate the offset
+    const offset = (currentPage - 1) * recordsPerPage;
+
     const query = `
       SELECT p.*, pl.*, pr.*
       FROM Friends f
@@ -130,9 +139,11 @@ const PostsControllet = {
       LEFT JOIN Places pl ON p.place_id = pl.place_id
       JOIN Profiles pr ON p.user_id = pr.user_id
       WHERE f.follower_id = $1 AND f.status = 'active'
+      ORDER BY p.created_at DESC
+      LIMIT $2 OFFSET $3
     `;
     try {
-      const result = await pool.query(query, [id]);
+      const result = await pool.query(query, [id, recordsPerPage, offset]);
       res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);
