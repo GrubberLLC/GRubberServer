@@ -5,6 +5,9 @@ const ReportRouter = express.Router();
 ReportRouter.route('')
   .post(ReportController.createReport)
 
+ReportRouter.route('/post')
+  .post(ReportController.createReportPosts)
+
 ReportRouter.route('')
   .get(ReportController.getReports)
 
