@@ -122,23 +122,24 @@ const PostsControllet = {
     }
   },
   getPostByFriendId: async (req, res) => {
-    const { id } = req.params; 
+    const { id } = req.params;
     const query = `
       SELECT p.*, pl.*, pr.*
       FROM Friends f
       JOIN Posts p ON p.user_id = f.following_id
-      JOIN Places pl ON p.place_id = pl.place_id
+      LEFT JOIN Places pl ON p.place_id = pl.place_id
       JOIN Profiles pr ON p.user_id = pr.user_id
       WHERE f.follower_id = $1 AND f.status = 'active'
     `;
     try {
       const result = await pool.query(query, [id]);
-      res.status(201).json(result.rows);
+      res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
     }
   },
+  
   updatePostById: async (req, res) => {
     const {id} = req.params; 
     const {media, media_type, user_id, caption, place_id} = req.body; 
