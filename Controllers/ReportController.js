@@ -15,7 +15,7 @@ const ReportController = {
   createReport: async (req, res) => {
     const { reporter_id, reporter_email, reported_id, subject, message, category } = req.body; 
     const query = `
-      INSERT INTO Places
+      INSERT INTO Reports
       (reporter_id, reported_id, subject, message, category, created_at)
       VALUES ($1, $2, $3, $4, $5,  NOW())
       RETURNING *;`;
