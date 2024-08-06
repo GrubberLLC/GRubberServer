@@ -133,14 +133,18 @@ const PostsControllet = {
     const offset = (currentPage - 1) * recordsPerPage;
 
     const query = `
+      WITH DistinctFollowing AS (
+        SELECT DISTINCT following_id
+        FROM Friends
+        WHERE follower_id = $1 AND status = 'active'
+      )
       SELECT p.*, pl.*, pr.*
-      FROM Friends f
-      JOIN Posts p ON p.user_id = f.following_id
+      FROM DistinctFollowing df
+      JOIN Posts p ON p.user_id = df.following_id
       LEFT JOIN Places pl ON p.place_id = pl.place_id
       JOIN Profiles pr ON p.user_id = pr.user_id
-      WHERE f.follower_id = $1 AND f.status = 'active'
       ORDER BY p.created_at DESC
-      LIMIT $2 OFFSET $3
+      LIMIT $2 OFFSET $3;
     `;
     try {
       const result = await pool.query(query, [id, recordsPerPage, offset]);
