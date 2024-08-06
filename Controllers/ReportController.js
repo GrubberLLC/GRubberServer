@@ -47,16 +47,15 @@ const ReportController = {
     }
   },
   getReports: async (req, res) => {
-    const { id } = req.params; 
     const query = `
-      SELECT * 
+      SELECT *  
       FROM Reports 
       ORDER BY created_at DESC
       LIMIT 150
     `;
     
     try {
-      const result = await pool.query(query, [id]);
+      const result = await pool.query(query);
       res.status(200).json(result.rows); // return all rows as JSON
     } catch (err) {
       console.error(err);
