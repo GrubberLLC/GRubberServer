@@ -25,6 +25,9 @@ FriendRouter.route('/following-count/:id')
 FriendRouter.route('/follower-count/:id')
   .get(FriendController.getAllFollowersByUserIs)
 
+FriendRouter.route('/block-user/:id')
+  .get(FriendController.blockerFriendByFriendId)
+
 FriendRouter.route('/relation/:userId/:friendId')
   .get(FriendController.getFriendByIds)
 

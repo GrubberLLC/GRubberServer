@@ -28,6 +28,20 @@ const FriendController = {
         return res.status(201).send(results)
     });
   },
+  blockerFriendByFriendId: (req, res) => {
+    const {id} = req.params; 
+    const query = `
+      UPDATE Friends
+      SET status = 'blocked'
+      WHERE friends_id = $1
+    `
+    connection.query(query, [id], (err, results) => {
+        if(err){
+          return res.status(500).send(err.message);
+        } 
+        return res.status(201).send(results)
+    });
+  },
   getFollowersByUserIs: async (req, res) => {
     const {id} = req.params; 
     const query = `
