@@ -37,7 +37,7 @@ const ReportController = {
           // return res.status(200).send('Error sending email');
         }
       });
-      console.log('Email sent:', info.response);
+      console.log('Email sent');
       // res.status(200).json(result.rows);
 
       res.status(201).json(result.rows);
@@ -71,7 +71,7 @@ const ReportController = {
           // Send response with email error information
           // return res.status(200).json({ error: 'Error sending email', detail: error.message });
         }
-        console.log('Email sent:', info.response);
+        console.log('Email sent');
         // Send success response only after the email is sent
         // return res.status(201).json(result.rows);
       });
