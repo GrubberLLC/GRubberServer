@@ -23,23 +23,21 @@ const ReportController = {
     try {
       const result = await pool.query(query, [reporter_id, reported_id, subject, message, category]);
 
-      // const mailOptions = {
-      //   from: 'contact@grubber.io', // sender address
-      //   to: 'report@grubber.io', // list of receivers
-      //   cc: reporter_email, // optional CC
-      //   subject: subject,
-      //   text: message, // plain text body
-      //   html: `<p>${message.replace(/\n/g, '<br>')}</p>` // HTML body
-      // };
+      const mailOptions = {
+        from: 'contact@grubber.io', // sender address
+        to: 'report@grubber.io', // list of receivers
+        subject: subject,
+        text: message, // plain text body
+        html: `<p>${message.replace(/\n/g, '<br>')}</p>`, // HTML body
+      };
 
-      // // Send email
-      // transporter.sendMail(mailOptions, (error, info) => {
-      //   if (error) {
-      //     console.error('Error sending email:', error);
-      //     return res.status(200).send('Error sending email');
-      //   }
-      //   console.log('Email sent:', info.response);
-      // });
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error('Error sending email:', error);
+          // return res.status(200).send('Error sending email');
+        }
+      });
+      console.log('Email sent:', info.response);
       // res.status(200).json(result.rows);
 
       res.status(201).json(result.rows);
@@ -59,25 +57,24 @@ const ReportController = {
     try {
       const result = await pool.query(query, [reporter_id, reported_id, subject, message, category]);
   
-      // const mailOptions = {
-      //   from: 'contact@gmail.com', // sender address
-      //   to: 'report@grubber.io', // list of receivers
-      //   subject: subject,
-      //   text: message, // plain text body
-      //   html: `<p>${message.replace(/\n/g, '<br>')}</p>`, // HTML body
-      // };
+      const mailOptions = {
+        from: 'contact@grubber.io', // sender address
+        to: 'report@grubber.io', // list of receivers
+        subject: subject,
+        text: message, // plain text body
+        html: `<p>${message.replace(/\n/g, '<br>')}</p>`, // HTML body
+      };
   
-      // // Send email
-      // transporter.sendMail(mailOptions, (error, info) => {
-      //   if (error) {
-      //     console.error('Error sending email:', error);
-      //     // Send response with email error information
-      //     return res.status(200).json({ error: 'Error sending email', detail: error.message });
-      //   }
-      //   console.log('Email sent:', info.response);
-      //   // Send success response only after the email is sent
-      //   return res.status(201).json(result.rows);
-      // });
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error('Error sending email:', error);
+          // Send response with email error information
+          // return res.status(200).json({ error: 'Error sending email', detail: error.message });
+        }
+        console.log('Email sent:', info.response);
+        // Send success response only after the email is sent
+        // return res.status(201).json(result.rows);
+      });
       res.status(201).json(result.rows);
   
     } catch (err) {
