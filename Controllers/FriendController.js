@@ -117,7 +117,6 @@ const FriendController = {
       FROM Friends f
       JOIN Profiles p
       ON f.follower_id = p.user_id
-      WHERE status = 'active' 
       AND following_id = ?
     `
     connection.query(query, [id], (err, results) => {
