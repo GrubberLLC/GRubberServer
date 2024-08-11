@@ -5,16 +5,16 @@ const admin = require('../bin/utils/firebaseAdmin');
 const ProfileController = {
   createProfile: async (req, res) => {
     const { userId, username, email, phone, location, first_name, 
-      last_name, name, bio, nickname, profile_picture, public, notifications } = req.body;
+      last_name, name, bio, nickname, profile_picture, public, notifications, verified, verified100 } = req.body;
     const query = `
       INSERT INTO Profiles
       (user_id, username, email, phone, location, first_name, last_name, 
-        full_name, profile_picture, bio, public, nickname, notifications, following, followers)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 0, 0)
+        full_name, profile_picture, bio, public, nickname, notifications, following, followers, verified, verified100)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 0, 0, $14, $15)
       RETURNING *;`;
     try {
       const result = await pool.query(query, [userId, username, email, phone, location, 
-        first_name, last_name, name, profile_picture, bio, public, nickname, notifications]);
+        first_name, last_name, name, profile_picture, bio, public, nickname, notifications, verified, verified100]);
       res.status(201).json(result.rows[0]);
     } catch (err) {
       console.error(err);
