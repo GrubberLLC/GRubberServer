@@ -58,6 +58,19 @@ const ProfileController = {
       res.status(500).send(err.message);
     }
   },
+  grabAllProfileCount: async (req, res) => {
+    const query = `
+      SELECT COUNT(*) AS totalProfiles FROM Profiles`;
+    try {
+      const result = await pool.query(query);
+      const totalProfiles = result.rows[0].totalprofiles; // Extract the totalProfiles count
+      res.status(200).json({ totalProfiles });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
+  },
+  
   updateUserProfile: async (req, res) => {
     const { id } = req.params
     const { username, email, phone, location, first_name, 

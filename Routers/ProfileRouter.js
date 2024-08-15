@@ -6,6 +6,9 @@ ProfileRouter.route('')
   .post(ProfileController.createProfile)
   .get(ProfileController.grabAllProfile)
 
+ProfileRouter.route('/all')
+  .get(ProfileController.grabAllProfileCount)
+
 ProfileRouter.route('/:id')
   .get(ProfileController.grabProfile)
   .put(ProfileController.updateUserProfile)
