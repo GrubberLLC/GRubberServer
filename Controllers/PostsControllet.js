@@ -6,7 +6,7 @@ const PostsControllet = {
     const query = `
       INSERT INTO Posts
       (media, media_type, user_id, caption, place_id, yelp_id, media_orientation, created_at)
-      VALUES ($1, $2, $3, $4, $5, $6, $9, NOW())
+      VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
       RETURNING *;`;
     try {
       const result = await pool.query(query, [media, media_type, user_id, caption, place_id, media_orientation, yelp_id]);
